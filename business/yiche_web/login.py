@@ -21,10 +21,16 @@ def suite():
 
 if __name__ == '__main__':
     suite_tests=suite()
-    picture_time = time.strftime("%Y-%m-%d-%H_%M_%S", time.localtime(time.time()))
-    report_name="测试报告"+picture_time
+    report_name="测试报告"
     description="登录验证"
-    build_report(suite_tests,report_name,description)
+
+    result=Report.report(suite_tests,report_name,description)
+    if result:
+        print("用例执行成功")
+    else:
+        print("用例执行失败")
+
+
 
 
 
