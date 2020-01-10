@@ -7,16 +7,13 @@
 from test_case.case import *
 from test_case.data import *
 from report.image import *
+
+import unittest
+from BeautifulReport import BeautifulReport    #导入BeautifulReport
+root_path = os.path.abspath(os.path.dirname(__file__)).split('selenium_python')[0]
+path=root_path+"\\selenium_python\\"
 if __name__ == '__main__':
-    try:
-        data = Data()
-        driver = Driver()
-        browser = driver.chrome_browser
+    suite_tests = unittest.defaultTestLoader.discover(".",pattern="*tests.py",top_level_dir=None)     #"."表示当前目录，"*tests.py"匹配当前目录下所有tests.py结尾的用例
+    BeautifulReport(suite_tests).report(filename='百度测试报告', description='搜索测试', log_path='.')    #log_path='.'把report放到当前目录下
 
-        Case.login(browser,data)
 
-        driver.tearDown()
-
-    except Exception as e:
-        print(e)
-        catch_image(browser)

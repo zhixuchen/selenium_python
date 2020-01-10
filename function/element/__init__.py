@@ -10,6 +10,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
 
+
 def find_element(browser, by, string):
     WebDriverWait(browser, 10).until(EC.presence_of_element_located((by, string)))
     element = browser.find_element(by, string)
