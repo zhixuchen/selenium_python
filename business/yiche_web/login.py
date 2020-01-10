@@ -6,24 +6,14 @@
 
 
 from report import *
-import unittest
-from test_case.case.login_case import Login_Case
 
-def suite():
-    suite = unittest.TestSuite()
-    suite.addTest(Login_Case('test_loginsSuccess'))
-    # suite.addTest(Login_Case('test_loginfail'))
-    # suite.addTest(Login_Case('test_loginusernamefail'))
-    # suite.addTest(Login_Case('test_nulluser'))
-    # suite.addTest(Login_Case('test_nullpwd'))
-    return suite
+from test_case.suite.login_suite import *
 
 
 if __name__ == '__main__':
     suite_tests=suite()
     report_name="测试报告"
     description="登录验证"
-
     result=Report.report(suite_tests,report_name,description)
     if result:
         print("用例执行成功")
