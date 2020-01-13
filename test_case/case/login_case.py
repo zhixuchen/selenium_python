@@ -4,16 +4,12 @@
 # datetime:2020/1/7 16:25
 # software: PyCharm
 
-import numpy
-from selenium.webdriver.common.by import By
-from test_case.data import Data
-from function.element import *
-from report.image import *
-import unittest
+from test_case.case import *
 class Login_Case(unittest.TestCase):
     def setUp(self):
         self.driver = Driver()
         self.browser=self.driver.chrome_browser
+
     def login(self,data):
         try:
             url = data.url
@@ -22,6 +18,7 @@ class Login_Case(unittest.TestCase):
             sms_code = data.sms_code
             self.browser.get(url)
             random = numpy.random.randint(0, 2, 1)
+            random=0
             if random == 0:  # 密码登录
                 find_elements(self.browser, By.CLASS_NAME, "el-input__inner")[0].send_keys(account)
                 find_elements(self.browser, By.CLASS_NAME, "el-input__inner")[1].send_keys(pwd)
@@ -44,6 +41,9 @@ class Login_Case(unittest.TestCase):
         self.login(data)
         tip = find_element(self.browser,By.CLASS_NAME,"header-title").text
         self.assertEqual(tip, '林润云收单系统')
+
+
+
 
     # def test_nulluser(self):
     #     '''用户名为空'''
@@ -69,7 +69,13 @@ class Login_Case(unittest.TestCase):
     #     self.assertEqual(nulltxtVerify, '请输入验证码')
 
     def tearDown(self):
+        print("登录测试结束")
+
+
+
         self.driver.tearDown()
+
+
 
 if __name__ == '__main__':
     unittest.main()

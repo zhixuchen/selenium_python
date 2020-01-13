@@ -6,18 +6,21 @@
 
 from selenium import webdriver
 import os
-import sys
-
+import time
+root_path = os.path.abspath(os.path.dirname(__file__)).split('selenium_python')[0]
 class Driver():
     def __init__(self):
-        self.path=os.path.dirname(os.path.realpath(sys.executable))  # 项目执行路径
-        self.driver_path= self.path + "\\selenium_driver\\chromedriver.exe"
+        self.driver_path = root_path + "selenium_python\\function\\driver\\chromedriver.exe"
         self.chrome_browser=webdriver.Chrome(self.driver_path)
         self.chrome_browser.maximize_window()
     def tearDown(self):
         self.chrome_browser.quit()
 
-
+def upload_image( file_dir, file_name):
+    time.sleep(0.2)
+    up_load_path=root_path+"selenium_python\\function\\driver\\upimage.exe"
+    file_path = file_dir + file_name+'.png'
+    os.system('%s  %s' % (up_load_path, file_path))  # 调用AutoIt进行上传操作
 
 if __name__ == '__main__':
     browser = Driver()

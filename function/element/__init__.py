@@ -11,6 +11,13 @@ from selenium.webdriver.support import expected_conditions as EC
 
 
 
+
+def find_elementbytext(browser, by, string,text):
+    elements=find_elements(browser, by, string)
+    for element in elements:
+        if text==element.text:
+            return element
+
 def find_element(browser, by, string):
     WebDriverWait(browser, 10).until(EC.presence_of_element_located((by, string)))
     element = browser.find_element(by, string)
@@ -32,5 +39,7 @@ def find_element_click(browser,by,String):
     while (not element.is_enabled()):
         print("不可点击")
         if (element.is_enabled()):
+            element.click()
+            print("发现元素，并已经点击")
             break
-    return element
+    element.click()

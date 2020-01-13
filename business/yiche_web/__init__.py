@@ -4,9 +4,5 @@
 # datetime:2020/1/8 12:59
 # software: PyCharm
 
+from report import *
 
-if __name__ == '__main__':
-    try:
-        print("")
-    except Exception as e:
-        print("")

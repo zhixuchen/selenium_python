@@ -16,6 +16,11 @@ class Data():
         self.user3info = User()
         self.user4info = User()
 
+class Test_Data():
+    def __init__(self):
+        self.credit_image_titles=['身份证人像面','身份证国徽面','征信授权书','手持征信授权书']
+        self.credit_input_titles=['姓名','身份证号','手机号','业务类型','贷款银行','意向价格','银行卡号','家庭住址','签发机关','身份证有效期','长期有效']
+
 if __name__ == '__main__':
     try:
         a=Data()

@@ -9,7 +9,6 @@ from email import encoders
 from email.header import Header
 from email.mime.base import MIMEBase
 from email.mime.multipart import MIMEMultipart
-from email.mime.text import MIMEText
 
 from BeautifulReport import BeautifulReport  # 导入BeautifulReport
 
@@ -81,7 +80,7 @@ class Report():
     def report(suite_tests,report_name,description):
         try:
             name = Report.build_report(suite_tests, report_name, description)
-            Report.sent_email(name)
+            # Report.sent_email(name)
         except Exception as e:
             return False
         return True

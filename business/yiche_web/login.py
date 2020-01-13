@@ -5,11 +5,8 @@
 # software: PyCharm
 
 
-from report import *
-
+from business.yiche_web import *
 from test_case.suite.login_suite import *
-
-
 if __name__ == '__main__':
     suite_tests=suite()
     report_name="测试报告"
