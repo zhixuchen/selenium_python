@@ -3,10 +3,11 @@
 # author:zxchen
 # datetime:2020/1/8 12:51
 # software: PyCharm
-
+import os
 
 if __name__ == '__main__':
     try:
-        print("")
+        cmd = 'taskkill /F /IM chromedriver.exe'
+        os.system(cmd)
     except Exception as e:
-        print("")
+        print(e)

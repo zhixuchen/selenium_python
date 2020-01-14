@@ -9,6 +9,27 @@
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
+def find_elemntsbyelemnt(element,by,string):
+    webelements=element.find_elements(by,string)
+    return webelements
+
+def find_elemntbyelemnt(element,by,string):
+    webelement=element.find_element(by,string)
+    return webelement
+
+def element_send_key(element, key):
+    element.clear()
+    element.send_keys(key)
+
+def element_click(element):
+    while (not element.is_enabled()):
+        print("不可点击")
+        if (element.is_enabled()):
+            element.click()
+            print("发现元素，并已经点击")
+            break
+    element.click()
+
 
 
 
