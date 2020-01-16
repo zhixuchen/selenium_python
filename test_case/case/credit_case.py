@@ -4,10 +4,12 @@
 # datetime:2020/1/13 12:14
 # software: PyCharm
 from test_case.case import *
+
 TestData = Test_Data()
 data = Data()
 root_path = os.path.abspath(os.path.dirname(__file__)).split('selenium_python')[0]
 path = root_path + "selenium_python\\test_case\\data\\image\\"
+
 
 class Login_Case(unittest.TestCase):
     def setUp(self):
@@ -121,22 +123,23 @@ class Credit_Case(unittest.TestCase):
         find_element(self.browser, By.CLASS_NAME, "el-checkbox__inner").click()  ##长期有效
 
     def credit_add_others(self):
-        for a in range(1,4):
+        for a in range(1, 4):
             buttons = find_elements(self.browser, By.TAG_NAME, "button")
-            if a==3:
+            if a == 3:
                 for i in range(0, len(buttons)):
                     if "新增担保人" == buttons[i].text:
                         element_click(buttons[i])
             else:
-                for i in range(0,len(buttons)):
-                    if "添加共同还款人"==buttons[i].text:
+                for i in range(0, len(buttons)):
+                    if "添加共同还款人" == buttons[i].text:
                         element_click(buttons[i])
-            find_element_click(self.browser,By.ID,"tab-"+str(a))
+            find_element_click(self.browser, By.ID, "tab-" + str(a))
             div_images = find_elements(self.browser, By.CLASS_NAME, "image-field-row")
             image_elements = div_images[a].find_elements_by_tag_name("label")
             for i in range(0, len(image_elements)):
                 self.assertEqual(image_elements[i].text, TestData.credit_image_titles[i])  # 检查上传的图片类型是否缺失
-                images = image_elements[i].find_element_by_xpath("./following::*").find_element_by_class_name("image-pane")
+                images = image_elements[i].find_element_by_xpath("./following::*").find_element_by_class_name(
+                    "image-pane")
                 images.click()
                 upload_image(path, TestData.credit_image_titles[i])
                 while True:
@@ -254,6 +257,8 @@ class Credit_Case(unittest.TestCase):
                 element_click(buttons[i])
         print("测试结束")
         # self.driver.tearDown()
+
+
 if __name__ == '__main__':
     try:
         unittest.main()

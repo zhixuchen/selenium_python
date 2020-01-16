@@ -5,7 +5,7 @@
 # software: PyCharm
 
 
-from test_case.case.card_case import *
+from test_case.case.card_stage_case import *
 
 def suite():
     suite = unittest.TestSuite()
