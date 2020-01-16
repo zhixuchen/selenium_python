@@ -8,23 +8,26 @@ from function.config import *
 class Data():
     def __init__(self):
         self.url=get("url", "web_url")
-        self.account=get("account", "xs_account")
-        self.pwd=get("pwd", "xs_pwd")
         self.sms_code='123456'
-        self.user1info=User()
-        self.user2info = User()
-        self.user3info = User()
-        self.user4info = User()
+        self.user_info=User()
+
+    def get_account(self,account):
+        self.result=get("account",account)
+        return self.result
+
+    def get_pwd(self,pwd):
+        self.result=get("pwd",pwd)
+        return self.result
 
     def get_userinfo(self,a):
         if a==1:
-            self.userinfo= self.user1info
+            self.userinfo= User()
         elif a==2:
-            self.userinfo=self.user2info
+            self.userinfo=User()
         elif a==3:
-            self.userinfo=self.user3info
+            self.userinfo=User()
         elif a==4:
-            self.userinfo=self.user4info
+            self.userinfo=User()
 
         return self.userinfo
 
@@ -39,6 +42,8 @@ if __name__ == '__main__':
         a=Data()
         print(a.get_userinfo(1).name)
         print(a.get_userinfo(2).name)
+        print(a.get_account("kk_account"))
+        print(a.get_pwd("kk_pwd"))
         # print(a.getuserinfo().user.name)
     except Exception as e:
         print("")

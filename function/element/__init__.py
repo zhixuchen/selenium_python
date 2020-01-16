@@ -5,7 +5,7 @@
 # software: PyCharm
 
 
-
+import time
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
@@ -22,6 +22,7 @@ def element_send_key(element, key):
     element.send_keys(key)
 
 def element_click(element):
+    time.sleep(0.5)
     while (not element.is_enabled()):
         print("不可点击")
         if (element.is_enabled()):
@@ -35,9 +36,13 @@ def element_click(element):
 
 def find_elementbytext(browser, by, string,text):
     elements=find_elements(browser, by, string)
+
     for element in elements:
         if text==element.text:
+
             return element
+
+
 
 def find_element(browser, by, string):
     WebDriverWait(browser, 10).until(EC.presence_of_element_located((by, string)))
@@ -46,6 +51,7 @@ def find_element(browser, by, string):
 
 
 def find_elements(browser, by, string):
+    time.sleep(0.5)
     WebDriverWait(browser, 10).until(EC.presence_of_element_located((by, string)))
     element = browser.find_elements(by, string)
     return element
@@ -56,6 +62,7 @@ def find_element_send_key(browser, by, string, key):
     find_element(browser, by, string).send_keys(key)
 
 def find_element_click(browser,by,String):
+    time.sleep(1)
     element = find_element(browser,by,String)
     while (not element.is_enabled()):
         print("不可点击")

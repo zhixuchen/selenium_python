@@ -5,45 +5,54 @@
 # software: PyCharm
 
 from test_case.case import *
+
+
 class Login_Case(unittest.TestCase):
     def setUp(self):
         self.driver = Driver()
-        self.browser=self.driver.chrome_browser
+        self.browser = self.driver.chrome_browser
 
-    def login(self,data):
+    def login(self):
         try:
+            data = Data()
             url = data.url
-            account = data.account
-            pwd = data.pwd
-            sms_code = data.sms_code
             self.browser.get(url)
-            random = numpy.random.randint(0, 2, 1)
-            random=0
-            if random == 0:  # 密码登录
-                find_elements(self.browser, By.CLASS_NAME, "el-input__inner")[0].send_keys(account)
-                find_elements(self.browser, By.CLASS_NAME, "el-input__inner")[1].send_keys(pwd)
-                find_elements(self.browser, By.TAG_NAME, "button")[0].click()
-
-            elif random == 1:  # 验证码登录
-                find_elements(self.browser, By.CLASS_NAME, "el-input__inner")[0].send_keys(account)
-                find_elements(self.browser, By.TAG_NAME, "button")[1].click()
-                find_elements(self.browser, By.TAG_NAME, "button")[0].click()
-                find_elements(self.browser, By.CLASS_NAME, "el-input__inner")[1].send_keys(sms_code)
-                find_elements(self.browser, By.TAG_NAME, "button")[1].click()
-
         except Exception as e:
+            print(e)
+            catch_image(self.browser)
+
+    def test_loginbypwd(self):
+        try:
+            data = Data()
+            account = data.get_account("xs_account")
+            pwd = data.get_pwd("xs_pwd")
+            find_elements(self.browser, By.CLASS_NAME, "el-input__inner")[0].send_keys(account)
+            find_elements(self.browser, By.CLASS_NAME, "el-input__inner")[1].send_keys(pwd)
+            find_elements(self.browser, By.TAG_NAME, "button")[0].click()
+        except Exception as e:
+            print(e)
+            catch_image(self.browser)
+
+    def test_loginbysms(self):
+        try:
+            data = Data()
+            account = data.get_account("xs_account")
+            sms_code = data.sms_code
+            find_elements(self.browser, By.CLASS_NAME, "el-input__inner")[0].send_keys(account)
+            find_elements(self.browser, By.TAG_NAME, "button")[1].click()
+            find_elements(self.browser, By.TAG_NAME, "button")[0].click()
+            find_elements(self.browser, By.CLASS_NAME, "el-input__inner")[1].send_keys(sms_code)
+            find_elements(self.browser, By.TAG_NAME, "button")[1].click()
+        except Exception as  e:
             print(e)
             catch_image(self.browser)
 
     def test_loginsSuccess(self):
         '''登录成功'''
-        data = Data()
-        self.login(data)
-        tip = find_element(self.browser,By.CLASS_NAME,"header-title").text
+        self.login()
+        self.test_loginbypwd()
+        tip = find_element(self.browser, By.CLASS_NAME, "header-title").text
         self.assertEqual(tip, '林润云收单系统')
-
-
-
 
     # def test_nulluser(self):
     #     '''用户名为空'''
@@ -71,10 +80,7 @@ class Login_Case(unittest.TestCase):
     def tearDown(self):
         print("登录测试结束")
 
-
-
         self.driver.tearDown()
-
 
 
 if __name__ == '__main__':
