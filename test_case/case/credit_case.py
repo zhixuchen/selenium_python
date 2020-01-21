@@ -94,15 +94,15 @@ class Credit_Case(unittest.TestCase):
             if "姓名" == field_name:
                 element_send_key(
                     find_elemntbyelemnt(find_elemntbyelemnt(fields_elements[i], By.XPATH, "./following::*"),
-                                        By.TAG_NAME, "input"), data.user1info.name)
+                                        By.TAG_NAME, "input"), data.get_userinfo().name)
             elif "身份证号" == field_name:
                 element_send_key(
                     find_elemntbyelemnt(find_elemntbyelemnt(fields_elements[i], By.XPATH, "./following::*"),
-                                        By.TAG_NAME, "input"), data.user1info.idcard)
+                                        By.TAG_NAME, "input"), data.get_userinfo().idcard)
             elif "手机号" == field_name:
                 element_send_key(
                     find_elemntbyelemnt(find_elemntbyelemnt(fields_elements[i], By.XPATH, "./following::*"),
-                                        By.TAG_NAME, "input"), data.user1info.mobile)
+                                        By.TAG_NAME, "input"), data.get_userinfo().mobile)
             elif "意向价格" == field_name:
                 element_send_key(
                     find_elemntbyelemnt(find_elemntbyelemnt(fields_elements[i], By.XPATH, "./following::*"),
@@ -110,15 +110,15 @@ class Credit_Case(unittest.TestCase):
             elif "银行卡号" == field_name:
                 element_send_key(
                     find_elemntbyelemnt(find_elemntbyelemnt(fields_elements[i], By.XPATH, "./following::*"),
-                                        By.TAG_NAME, "input"), data.user1info.bankcode)
+                                        By.TAG_NAME, "input"), data.get_userinfo().bankcode)
             elif "家庭住址" == field_name:
                 element_send_key(
                     find_elemntbyelemnt(find_elemntbyelemnt(fields_elements[i], By.XPATH, "./following::*"),
-                                        By.TAG_NAME, "input"), data.user1info.name + "的家庭住址")
+                                        By.TAG_NAME, "input"), data.get_userinfo().name + "的家庭住址")
             elif "签发机关" == field_name:
                 element_send_key(
                     find_elemntbyelemnt(find_elemntbyelemnt(fields_elements[i], By.XPATH, "./following::*"),
-                                        By.TAG_NAME, "input"), data.user1info.name + "的发证机关")
+                                        By.TAG_NAME, "input"), data.get_userinfo().name + "的发证机关")
 
         find_element(self.browser, By.CLASS_NAME, "el-checkbox__inner").click()  ##长期有效
 
@@ -158,28 +158,28 @@ class Credit_Case(unittest.TestCase):
                 if "姓名" == field_name:
                     element_send_key(
                         find_elemntbyelemnt(find_elemntbyelemnt(fields_elements[i], By.XPATH, "./following::*"),
-                                            By.TAG_NAME, "input"), data.get_userinfo(a).name)
+                                            By.TAG_NAME, "input"), data.get_userinfo().name)
                 elif "身份证号" == field_name:
                     element_send_key(
                         find_elemntbyelemnt(find_elemntbyelemnt(fields_elements[i], By.XPATH, "./following::*"),
-                                            By.TAG_NAME, "input"), data.get_userinfo(a).idcard)
+                                            By.TAG_NAME, "input"), data.get_userinfo().idcard)
                 elif "手机号" == field_name:
                     element_send_key(
                         find_elemntbyelemnt(find_elemntbyelemnt(fields_elements[i], By.XPATH, "./following::*"),
-                                            By.TAG_NAME, "input"), data.get_userinfo(a).mobile)
+                                            By.TAG_NAME, "input"), data.get_userinfo().mobile)
 
                 elif "银行卡号" == field_name:
                     element_send_key(
                         find_elemntbyelemnt(find_elemntbyelemnt(fields_elements[i], By.XPATH, "./following::*"),
-                                            By.TAG_NAME, "input"), data.get_userinfo(a).bankcode)
+                                            By.TAG_NAME, "input"), data.get_userinfo().bankcode)
                 elif "家庭住址" == field_name:
                     element_send_key(
                         find_elemntbyelemnt(find_elemntbyelemnt(fields_elements[i], By.XPATH, "./following::*"),
-                                            By.TAG_NAME, "input"), data.get_userinfo(a).name + "的家庭住址")
+                                            By.TAG_NAME, "input"), data.get_userinfo().name + "的家庭住址")
                 elif "签发机关" == field_name:
                     element_send_key(
                         find_elemntbyelemnt(find_elemntbyelemnt(fields_elements[i], By.XPATH, "./following::*"),
-                                            By.TAG_NAME, "input"), data.get_userinfo(a).name + "的发证机关")
+                                            By.TAG_NAME, "input"), data.get_userinfo().name + "的发证机关")
 
             find_elements(self.browser, By.CLASS_NAME, "el-checkbox__inner")[a].click()  ##长期有效
 

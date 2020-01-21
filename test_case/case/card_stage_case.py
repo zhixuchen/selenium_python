@@ -56,7 +56,7 @@ class Login_Case(unittest.TestCase):
         self.login()
         self.test_loginbypwd()
         tip = find_element(self.browser, By.CLASS_NAME, "header-title").text
-        self.assertEqual(tip, '林润云收单系统')
+        self.assertEqual(tip, '林润云系统')
 
     def tearDown(self):
         print("登录测试结束")
@@ -186,6 +186,104 @@ class Card_Case(unittest.TestCase):
         time.sleep(2)
         find_element_click(self.browser, By.ID, "tab-stage")
         stage_div = find_element(self.browser, By.ID, "pane-stage")
+        labels = find_elemntsbyelemnt(stage_div, By.TAG_NAME, "label")
+        inputs = find_elemntsbyelemnt(stage_div, By.TAG_NAME, "input")
+
+        for label in labels:
+            input_element = find_elemntbyelemnt(find_elemntbyelemnt(label, By.XPATH, "./following::*"),
+                                                By.TAG_NAME, "input")
+            if label.text in ["商品名称", "还款期限"]:  # 必填下拉框
+                element_click(input_element)
+                if "商品名称" == label.text:
+                    element_click(find_elementbytext(self.browser, By.TAG_NAME, "li", "亚琛施耐泽-乘用"))
+                    element_click(find_elementbytext(self.browser, By.TAG_NAME, "li", "亚琛施耐泽S5[进口]"))
+                    element_click(
+                        find_elementbytext(self.browser, By.TAG_NAME, "li", "2012款-AC-Schnitzer-S5-3.0T-A/MT猎鹰版"))
+                    element_click(inputs[1])
+                    element_click(find_elementbytext(self.browser, By.TAG_NAME, "li", "进口车"))
+                elif "还款期限" == label.text:
+                    element_click(find_elementbytext(self.browser, By.TAG_NAME, "li", "36 期"))
+                    repay_period = input_element.get_attribute("value")
+
+            elif label.text in ["实际贷款额", "总利率", "还款人月均总收入", "其他月还款额", "其他负债余额", "个人总资产"]:  ##必填输入框
+                element_click(input_element)
+                if "实际贷款额" == label.text:
+                    element_send_key(input_element, "200000")
+                    contract_loan_money = input_element.get_attribute("value")
+                elif "总利率" == label.text:
+                    element_send_key(input_element, "25.5")
+                    company_service_rate = input_element.get_attribute("value")
+                elif "还款人月均总收入" == label.text:
+                    element_send_key(input_element, "8000")
+                    monthincome = input_element.get_attribute("value")
+                elif "其他月还款额" == label.text:
+                    element_send_key(input_element, "4200")
+                    monrepayamt = input_element.get_attribute("value")
+                elif "其他负债余额" == label.text:
+                    element_send_key(input_element, "1500000")
+                elif "个人总资产" == label.text:
+                    element_send_key(input_element, "3000000")
+                elif "权属人姓名" == label.text:
+                    element_send_key(input_element, data.get_userinfo().name)
+            elif label.text in ["现住房面积", "权属人姓名", "关联人月收入"]:  ##页面特殊处理
+                self.browser.execute_script("arguments[0].click()", input_element)
+                if "现住房面积" == label.text:
+                    element_send_key(input_element, "123.8")
+                elif "权属人姓名" == label.text:
+                    element_send_key(input_element, data.get_userinfo().name)
+                elif "关联人月收入" == label.text:
+                    element_send_key(input_element, "5000")
+            elif label.text in ["发动机号", "他项权证号", "抵押合同编号", "申请人与抵押物权属人关系"]:  # 非必填
+                element_click(input_element)
+                if "发动机号" == label.text:
+                    element_send_key(input_element, "FAGDHJSJKK")
+
+                elif "他项权证号" == label.text:
+                    element_send_key(input_element, "FHSKJI00555DA")
+                elif "抵押合同编号" == label.text:
+                    element_send_key(input_element, "HTLINRUN101211")
+                elif "申请人与抵押物权属人关系" == label.text:
+                    element_click(find_elementbytext(self.browser, By.TAG_NAME, "li", "本人"))
+            elif label.text in ["业务模式", "车架号", "车辆价格", "首付金额", "首付比例", "收入还贷比", "分期手续费率", "首月还款", "月还款金额", "手续费总额",
+                                "汽车经销商全称", "最高抵押率", "收款对象类型", "抵押品价值", "车损险投保金额", "贷款金额合计", "抵押品名称"]:
+                if label.text in ["业务模式", "车架号", "收款对象类型", "抵押品名称", "汽车经销商全称", "分期手续费率", "最高抵押率"]:
+                    defult = input_element.get_attribute("value")
+                    self.check_defult(label.text, defult)
+                    if label.text == "分期手续费率":
+                        commission_fee_rate = defult
+                elif label.text in ["车辆价格", "首付金额", "首付比例", "收入还贷比", "首月还款", "月还款金额", "手续费总额", "抵押品价值", "车损险投保金额",
+                                    "贷款金额合计"]:
+                    if "车辆价格" == label.text:
+                        car_price = input_element.get_attribute("value")
+                    elif "首付金额" == label.text:
+                        sf_money = input_element.get_attribute("value")
+                    elif "首付比例" == label.text:
+                        sf_proportion = input_element.get_attribute("value")
+                    elif "收入还贷比" == label.text:
+                        contract_sf_ratio = input_element.get_attribute("value")
+                    elif "首月还款" == label.text:
+                        first_month_money = input_element.get_attribute("value")
+                    elif "月还款金额" == label.text:
+                        month_money = input_element.get_attribute("value")
+                    elif "手续费总额" == label.text:
+                        poundage_amount = input_element.get_attribute("value")
+                    elif "抵押品价值" == label.text:
+                        mortvalue = input_element.get_attribute("value")
+                    elif "车损险投保金额" == label.text:
+                        insureamt = input_element.get_attribute("value")
+                    elif "贷款金额合计" == label.text:
+                        loan_money = input_element.get_attribute("value")
+        finance_data = {"car_price": car_price, "sf_money": sf_money, "sf_proportion": sf_proportion,
+                        "contract_sf_ratio": contract_sf_ratio, "first_month_money": first_month_money,
+                        "month_money": month_money,
+                        "poundage_amount": poundage_amount,
+                        "insureamt": insureamt, "loan_money": loan_money, "mortvalue": mortvalue,
+                        "monthincome": monthincome, "monrepayamt": monrepayamt,
+                        "commission_fee_rate": commission_fee_rate,
+                        "contract_loan_money": contract_loan_money,
+                        "company_service_rate": company_service_rate, "repay_period": repay_period}
+        print(finance_data)
+        self.check_finance(finance_data)
 
     def check_defult(self, check, defult):
         if "领卡地区号" == check:
@@ -204,6 +302,23 @@ class Card_Case(unittest.TestCase):
             self.assertIsNotNone(defult)
         elif "证件有效期" == check:
             self.assertIsNotNone(defult)
+        elif "业务模式" == check:
+            self.assertEqual("抵押+合作机构保证(先放款后抵押)", defult)
+        elif "车架号" == check:
+            self.assertEqual("00000000000000000", defult)
+        elif "车辆价格" == check:
+            self.assertIsNotNone(defult)
+        elif "收款对象类型" == check:
+            self.assertEqual("第三方机构", defult)
+        elif "抵押品名称" == check:
+            self.assertEqual("汽车", defult)
+
+        elif "汽车经销商全称" == check:
+            self.assertEqual("山东林润汽车销售服务有限公司", defult)
+        elif "分期手续费率" == check:
+            self.assertEqual("9.5", defult)
+        elif "最高抵押率" == check:
+            self.assertEqual("80", defult)
 
     def check_select(self, check, select_element):
         if "婚姻状况" == check:
@@ -329,6 +444,42 @@ class Card_Case(unittest.TestCase):
             self.assertEqual("寄送单位地址", lis[1].text)
             self.assertEqual("寄送住宅地址", lis[2].text)
 
+    def check_finance(self, finance_data):
+        car_price = float(finance_data["car_price"])  # 车辆价格
+        loan_money = float(finance_data["loan_money"])  # 贷款金额合计
+        sf_money = float(finance_data["sf_money"])  # 首付金额
+        sf_proportion = float(finance_data["sf_proportion"])  # 首付比例
+        contract_sf_ratio = float(finance_data["contract_sf_ratio"])  # 收入还贷比
+        commission_fee_rate = float(finance_data["commission_fee_rate"])  # 分期手续费率
+        first_month_money = float(finance_data["first_month_money"])  # 首月还款
+        month_money = float(finance_data["month_money"])  # 月还款金额
+        poundage_amount = float(finance_data["poundage_amount"])  # 手续费总额
+        insureamt = float(finance_data["insureamt"])  # 车损险投保金额
+        mortvalue = float(finance_data["mortvalue"])  # 抵押品价值
+        repay_period = int(list(filter(str.isdigit, finance_data["repay_period"]))[0] +
+                           list(filter(str.isdigit, finance_data["repay_period"]))[1])  # 期数
+        monthincome = float(finance_data["monthincome"])  # 还款人月总收入
+        monrepayamt = float(finance_data["monrepayamt"])  # 其他月还款额
+        company_service_rate = float(finance_data["company_service_rate"])  # 总利率
+        contract_loan_money = float(finance_data["contract_loan_money"])  # 实际贷款额
+        true_sf_proportion = round(100 * (sf_money / car_price), 2)
+        ture_sf_money = round(car_price - loan_money)
+        ture_contract_sf_ratio = (monrepayamt / monthincome) * 100  # 百分比
+        ture_first_month_money = round((loan_money + poundage_amount) - month_money * (repay_period - 1))
+        true_month_money = int(loan_money / repay_period) + int(poundage_amount / repay_period)  ##两个取整相加
+        true_poundage_amount = round((loan_money * commission_fee_rate) / 100)
+        true_loan_money = int(math.ceil((contract_loan_money + contract_loan_money * (
+                    company_service_rate - commission_fee_rate) / 100) / 100)) * 100  # 取百
+        self.assertEqual(ture_sf_money, sf_money, "首付金额计算有误（首付金额=车辆价格-贷款金额合计）")
+        self.assertEqual(true_sf_proportion, sf_proportion, "首付比例计算有误（首付比例=首付金额/车辆价格*100%）")
+        self.assertEqual(ture_first_month_money, first_month_money, "首月还款计算有误（首月还款=（贷款金额合计+手续费总额）-月还款金额×（贷款期数-1））")
+        self.assertEqual(true_month_money, month_money, "月还款金额计算有误(月还款金额=贷款金额合计/贷款期数+手续费总额/贷款期数)")
+        self.assertEqual(true_poundage_amount, poundage_amount, "手续费总额计算有误(手续费总额=贷款金额合计×分期手续费率)")
+        self.assertEqual(true_loan_money, loan_money, "贷款金额合计计算有误(贷款金额合计 = 实际贷款额 + 实际贷款额×（总利率 - 分期手续费率）)")
+        self.assertEqual(ture_contract_sf_ratio, contract_sf_ratio, "收入还贷比计算有误(收入还贷比=其他月还款额/还款人月均总收入)")
+        self.assertEqual(insureamt, car_price, "车损险投保金额和车辆价格不符")
+        self.assertEqual(mortvalue, car_price, "抵押品价值和车辆价格不符")
+
     def test_Claim(self):  ##认领操作
         element_click(find_elementbytext(self.browser, By.TAG_NAME, "a", "开卡分期列表"))
         element_click(find_elementbytext(self.browser, By.TAG_NAME, "div", "待认领案件"))
@@ -349,12 +500,12 @@ class Card_Case(unittest.TestCase):
 
     def storage(self):
 
-        element_click(find_elementbytext(self.browser,By.TAG_NAME,"button","暂存"))
-
+        element_click(find_elementbytext(self.browser, By.TAG_NAME, "button", "暂存"))
 
     def submit(self):
 
         element_click(find_elementbytext(self.browser, By.TAG_NAME, "button", "提交"))
+
     def test_CardSuccess(self):
         self.test_Handle()
         # self.card()
@@ -364,10 +515,3 @@ class Card_Case(unittest.TestCase):
 
     def tearDown(self):
         print("开卡测试结束")
-
-
-if __name__ == '__main__':
-    try:
-        print("")
-    except Exception as e:
-        print("")

@@ -36,10 +36,8 @@ def element_click(element):
 
 def find_elementbytext(browser, by, string,text):
     elements=find_elements(browser, by, string)
-
     for element in elements:
         if text==element.text:
-
             return element
 
 

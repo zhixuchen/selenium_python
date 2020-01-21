@@ -9,7 +9,6 @@ class Data():
     def __init__(self):
         self.url=get("url", "web_url")
         self.sms_code='123456'
-        self.user_info=User()
 
     def get_account(self,account):
         self.result=get("account",account)
@@ -19,15 +18,8 @@ class Data():
         self.result=get("pwd",pwd)
         return self.result
 
-    def get_userinfo(self,a):
-        if a==1:
-            self.userinfo= User()
-        elif a==2:
-            self.userinfo=User()
-        elif a==3:
-            self.userinfo=User()
-        elif a==4:
-            self.userinfo=User()
+    def get_userinfo(self):
+        self.userinfo = User()
 
         return self.userinfo
 
@@ -40,8 +32,8 @@ class Test_Data():
 if __name__ == '__main__':
     try:
         a=Data()
-        print(a.get_userinfo(1).name)
-        print(a.get_userinfo(2).name)
+        print(a.get_userinfo().name)
+        print(a.get_userinfo().name)
         print(a.get_account("kk_account"))
         print(a.get_pwd("kk_pwd"))
         # print(a.getuserinfo().user.name)
