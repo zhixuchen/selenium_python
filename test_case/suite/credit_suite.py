@@ -5,11 +5,10 @@
 # software: PyCharm
 
 
-from test_case.case.credit_case import *
+from test_case.suite import *
 
 def suite():
     suite = unittest.TestSuite()
-    suite.addTest(Login_Case('test_loginsSuccess'))
-    suite.addTest(Credit_Case('test_CreditSuccess'))
+    suite.addTest(credit_case.Credit_Case('test_CreditSuccess'))
 
     return suite

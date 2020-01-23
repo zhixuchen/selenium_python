@@ -11,11 +11,10 @@ root_path = os.path.abspath(os.path.dirname(__file__)).split('selenium_python')[
 path = root_path + "selenium_python\\test_case\\data\\image\\"
 
 
-class Login_Case(unittest.TestCase):
+class Credit_Case(unittest.TestCase):
     def setUp(self):
         self.driver = Driver()
         self.browser = self.driver.chrome_browser
-
     def login(self):
         try:
             data = Data()
@@ -25,7 +24,7 @@ class Login_Case(unittest.TestCase):
             print(e)
             catch_image(self.browser)
 
-    def test_loginbypwd(self):
+    def loginbypwd(self):
         try:
             data = Data()
             account = data.get_account("xs_account")
@@ -37,40 +36,9 @@ class Login_Case(unittest.TestCase):
             print(e)
             catch_image(self.browser)
 
-    def test_loginbysms(self):
-        try:
-            data = Data()
-            account = data.get_account("xs_account")
-            sms_code = data.sms_code
-            find_elements(self.browser, By.CLASS_NAME, "el-input__inner")[0].send_keys(account)
-            find_elements(self.browser, By.TAG_NAME, "button")[1].click()
-            find_elements(self.browser, By.TAG_NAME, "button")[0].click()
-            find_elements(self.browser, By.CLASS_NAME, "el-input__inner")[1].send_keys(sms_code)
-            find_elements(self.browser, By.TAG_NAME, "button")[1].click()
-        except Exception as  e:
-            print(e)
-            catch_image(self.browser)
-
-    def test_loginsSuccess(self):
-        '''登录成功'''
-        self.login()
-        self.test_loginbypwd()
-        tip = find_element(self.browser, By.CLASS_NAME, "header-title").text
-        self.assertEqual(tip, '林润云收单系统')
-
-    def tearDown(self):
-        print("登录测试结束")
-        globals()["browser"] = self.browser
-        globals()["driver"] = self.driver
-
-
-class Credit_Case(unittest.TestCase):
-    def setUp(self):
-        self.driver = globals()["driver"]
-        self.browser = globals()["browser"]
-
     def credit(self):
-        element_click(find_element_by_text(self.browser, By.TAG_NAME, "a", "征信进件"))
+        element=find_element(self.browser,By.LINK_TEXT,"征信进件")
+        element_click(element)
         div_image = find_element(self.browser, By.CLASS_NAME, "image-field-row")
         image_elements = div_image.find_elements_by_tag_name("label")
         for i in range(0, len(image_elements)):
@@ -78,14 +46,18 @@ class Credit_Case(unittest.TestCase):
             images = image_elements[i].find_element_by_xpath("./following::*").find_element_by_class_name("image-pane")
             images.click()
             upload_image(path, TestData.credit_image_titles[i])
+            sleep_time=1
             while True:
                 if "重传" != images.find_element_by_tag_name("button").text:
                     time.sleep(1)
+                    sleep_time=sleep_time+1
+                    print("等待上传成功。。。。")
                     if "重传" == images.find_element_by_tag_name("button").text:
-                        print("上传完成")
+                        break
+                    elif sleep_time>10:
+                        print("等待超过10秒，不继续等待")
                         break
                 else:
-                    print("上传完成")
                     break
         div_fields = find_element(self.browser, By.CLASS_NAME, "comp-form-item-fields")
         fields_elements = find_elements_by_element(div_fields, By.TAG_NAME, "label")
@@ -133,7 +105,8 @@ class Credit_Case(unittest.TestCase):
                 for i in range(0, len(buttons)):
                     if "添加共同还款人" == buttons[i].text:
                         element_click(buttons[i])
-            find_element_click(self.browser, By.ID, "tab-" + str(a))
+            element=find_element(self.browser, By.ID, "tab-" + str(a))
+            element_click(element)
             div_images = find_elements(self.browser, By.CLASS_NAME, "image-field-row")
             image_elements = div_images[a].find_elements_by_tag_name("label")
             for i in range(0, len(image_elements)):
@@ -142,14 +115,18 @@ class Credit_Case(unittest.TestCase):
                     "image-pane")
                 images.click()
                 upload_image(path, TestData.credit_image_titles[i])
+                sleep_time=1
                 while True:
                     if "重传" != images.find_element_by_tag_name("button").text:
                         time.sleep(1)
+                        sleep_time=sleep_time+1
+                        print("等待上传成功。。。。")
                         if "重传" == images.find_element_by_tag_name("button").text:
-                            print("上传完成")
+                            break
+                        elif sleep_time > 10:
+                            print("等待超过10秒，不继续等待")
                             break
                     else:
-                        print("上传完成")
                         break
             div_fields = find_elements(self.browser, By.CLASS_NAME, "comp-form-item-fields")
             fields_elements = find_elements_by_element(div_fields[a], By.TAG_NAME, "label")
@@ -184,6 +161,9 @@ class Credit_Case(unittest.TestCase):
             find_elements(self.browser, By.CLASS_NAME, "el-checkbox__inner")[a].click()  ##长期有效
 
     def test_CreditSuccess(self):
+        '''征信进件测试'''
+        self.login()
+        self.loginbypwd()
         self.credit()
         self.test_CarType0()
         self.test_Bank_E()
@@ -256,11 +236,5 @@ class Credit_Case(unittest.TestCase):
             if "确定" == buttons[i].text:
                 element_click(buttons[i])
         print("测试结束")
-        # self.driver.tearDown()
+        self.driver.tearDown()
 
-
-if __name__ == '__main__':
-    try:
-        unittest.main()
-    except Exception as e:
-        print("")

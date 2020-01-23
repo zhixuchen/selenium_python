@@ -5,11 +5,10 @@
 # software: PyCharm
 
 
-from test_case.case.card_stage_case import *
+from test_case.suite import *
 
 def suite():
     suite = unittest.TestSuite()
-    suite.addTest(Login_Case('test_loginsSuccess'))
-    suite.addTest(Card_Case('test_CardSuccess'))
+    suite.addTest(card_stage_case.Card_Case('test_CardSuccess'))
 
     return suite

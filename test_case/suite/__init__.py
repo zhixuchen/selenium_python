@@ -4,9 +4,7 @@
 # datetime:2020/1/10 18:45
 # software: PyCharm
 
-
-if __name__ == '__main__':
-    try:
-        print("")
-    except Exception as e:
-        print("")
+from test_case.case import card_stage_case
+from test_case.case import credit_case
+from test_case.case import login_case
+from test_case.case import *

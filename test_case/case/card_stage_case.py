@@ -11,10 +11,11 @@ root_path = os.path.abspath(os.path.dirname(__file__)).split('selenium_python')[
 path = root_path + "selenium_python\\test_case\\data\\image\\"
 
 
-class Login_Case(unittest.TestCase):
+class Card_Case(unittest.TestCase):
     def setUp(self):
         self.driver = Driver()
         self.browser = self.driver.chrome_browser
+        self.n = 1
 
     def login(self):
         try:
@@ -25,7 +26,7 @@ class Login_Case(unittest.TestCase):
             print(e)
             catch_image(self.browser)
 
-    def test_loginbypwd(self):
+    def loginbypwd(self):
         try:
             data = Data()
             account = data.get_account("kk_account")
@@ -37,46 +38,13 @@ class Login_Case(unittest.TestCase):
             print(e)
             catch_image(self.browser)
 
-    def test_loginbysms(self):
-        try:
-            data = Data()
-            account = data.get_account("xs_account")
-            sms_code = data.sms_code
-            find_elements(self.browser, By.CLASS_NAME, "el-input__inner")[0].send_keys(account)
-            find_elements(self.browser, By.TAG_NAME, "button")[1].click()
-            find_elements(self.browser, By.TAG_NAME, "button")[0].click()
-            find_elements(self.browser, By.CLASS_NAME, "el-input__inner")[1].send_keys(sms_code)
-            find_elements(self.browser, By.TAG_NAME, "button")[1].click()
-        except Exception as  e:
-            print(e)
-            catch_image(self.browser)
-
-    def test_loginsSuccess(self):
-        '''登录测试'''
-        self.login()
-        self.test_loginbypwd()
-        tip = find_element(self.browser, By.CLASS_NAME, "header-title").text
-        self.assertEqual(tip, '林润云系统')
-
-    def tearDown(self):
-        print("登录测试结束")
-        globals()["browser"] = self.browser
-        globals()["driver"] = self.driver
-
-
-class Card_Case(unittest.TestCase):
-    def setUp(self):
-        self.driver = globals()["driver"]
-        self.browser = globals()["browser"]
-        self.n = 1
-
     def card(self):
         '''开卡测试'''
         try:
             card_div = find_element(self.browser, By.ID, "pane-card")
             labels = find_elements_by_element(card_div, By.TAG_NAME, "label")
         except Exception as e:
-            print("执行用例失败："+e)
+            print("执行用例失败：" + e)
         check_list = ["婚姻状况", "受教育程度", "住宅状况", "职务", "单位性质", "与开卡人关系", "职业及职级", "自购车状况", "卡片领取方式"]
         select_div = find_elements(self.browser, By.CLASS_NAME, "comp-form-item-fields")[0]
         self.check_select_list(check_list, select_div)
@@ -145,7 +113,7 @@ class Card_Case(unittest.TestCase):
             tab_element = find_element(self.browser, By.ID, "tab-stage")
             element_click(tab_element)
         except Exception as e:
-            print("执行用例报错："+e)
+            print("执行用例报错：" + e)
         check_list = ["业务模式", "还款期限", "申请人与抵押物权属人关系", "收款对象类型"]
         select_div = find_elements(self.browser, By.CLASS_NAME, "comp-form-item-fields")[1]
         self.check_select_list(check_list, select_div)
@@ -258,11 +226,13 @@ class Card_Case(unittest.TestCase):
         print("分期页面默认值校验通过")
         self.check_finance(finance_data)
         print("分期页面金额计算校验通过")
+
     def click_selcet_li_by_text(self, text):
         self.n = self.n + 1
         element_div = find_element(self.browser, By.XPATH, "/html/body/div[" + str(self.n) + "]")
         select_element = find_element_by_text_element(element_div, By.TAG_NAME, "li", text)
         element_click(select_element)
+
     def check_defult(self, check, defult):
         title_div = find_elements(self.browser, By.CLASS_NAME, "lcomp-module-pane")[0]
         title_element = find_element_by_text_element(title_div, By.TAG_NAME, "span", "业务品种")
@@ -312,9 +282,9 @@ class Card_Case(unittest.TestCase):
                 check_value = "9.5"
             elif "最高抵押率" == check:
                 error_msg = "最高抵押率错误"
-                if car_type=="新车":
+                if car_type == "新车":
                     check_value = "80"
-                elif car_type=="二手车":
+                elif car_type == "二手车":
                     check_value = "70"
             self.checkEqual(check_value, defult, error_msg)
 
@@ -356,6 +326,7 @@ class Card_Case(unittest.TestCase):
                 true_list = ["第三方机构", "合作单位"]
             for i in range(0, len(true_list)):
                 self.checkEqual(true_list[i], lis[i].get_attribute("textContent"), check + "列表校验失败")
+
     def check_finance(self, finance_data):
         car_price = float(finance_data["car_price"])  # 车辆价格
         loan_money = float(finance_data["loan_money"])  # 贷款金额合计
@@ -411,20 +382,23 @@ class Card_Case(unittest.TestCase):
             raise
 
     def test_Claim(self, car_type):  ##认领操作
-        element_click(find_element_by_text(self.browser, By.TAG_NAME, "a", "开卡分期列表"))
+        element = find_element(self.browser, By.LINK_TEXT, "开卡分期列表")
+        element_click(element)
         element_click(find_element_by_text(self.browser, By.TAG_NAME, "div", "待认领案件"))
         self.claim_input_car_type(car_type)
         find_elements(self.browser, By.CLASS_NAME, "el-table__row")  # 隐性等待，等待列表元素都展示出来
         element_click(find_element_by_text(self.browser, By.TAG_NAME, "button", "认领"))
 
     def test_UnClaim(self):  ##退件操作
-        element_click(find_element_by_text(self.browser, By.TAG_NAME, "a", "开卡分期列表"))
+        element = find_element(self.browser, By.LINK_TEXT, "开卡分期列表")
+        element_click(element)
         element_click(find_element_by_text(self.browser, By.TAG_NAME, "div", "待处理案件"))
         find_elements(self.browser, By.CLASS_NAME, "el-table__row")  # 隐性等待，等待列表元素都展示出来
         element_click(find_element_by_text(self.browser, By.TAG_NAME, "button", "退件"))
 
     def test_Handle(self, car_type):  ##处理操作
-        element_click(find_element_by_text(self.browser, By.TAG_NAME, "a", "开卡分期列表"))
+        element = find_element(self.browser, By.LINK_TEXT, "开卡分期列表")
+        element_click(element)
         element_click(find_element_by_text(self.browser, By.TAG_NAME, "div", "待处理案件"))
         self.unclaim_input_car_type(car_type)
         find_elements(self.browser, By.CLASS_NAME, "el-table__row")  # 隐性等待，等待列表元素都展示出来
@@ -480,6 +454,8 @@ class Card_Case(unittest.TestCase):
     def test_CardSuccess(self):
         '''开卡分期测试'''
         car_type = "二手车"
+        self.login()
+        self.loginbypwd()
         self.test_Handle(car_type)
         self.card()
         self.stage()
@@ -488,3 +464,4 @@ class Card_Case(unittest.TestCase):
 
     def tearDown(self):
         print("开卡_分期测试结束")
+        self.driver.tearDown()

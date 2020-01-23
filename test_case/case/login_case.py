@@ -52,7 +52,7 @@ class Login_Case(unittest.TestCase):
         self.login()
         self.test_loginbypwd()
         tip = find_element(self.browser, By.CLASS_NAME, "header-title").text
-        self.assertEqual(tip, '林润云收单系统')
+        self.assertEqual(tip, '林润云系统')
 
     # def test_nulluser(self):
     #     '''用户名为空'''

@@ -4,10 +4,9 @@
 # datetime:2020/1/8 18:04
 # software: PyCharm
 from business.yiche_web import *
-from test_case.suite.card_stage_suite import *
 
 if __name__ == '__main__':
-    suite_tests = suite()
+    suite_tests = card_stage_suite.suite()
     report_name = "测试报告"
     description = "提交开卡_分期信息"
     result = Report.report(suite_tests, report_name, description)
