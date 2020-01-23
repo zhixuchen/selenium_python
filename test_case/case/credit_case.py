@@ -70,7 +70,7 @@ class Credit_Case(unittest.TestCase):
         self.browser = globals()["browser"]
 
     def credit(self):
-        element_click(find_elementbytext(self.browser, By.TAG_NAME, "a", "征信进件"))
+        element_click(find_element_by_text(self.browser, By.TAG_NAME, "a", "征信进件"))
         div_image = find_element(self.browser, By.CLASS_NAME, "image-field-row")
         image_elements = div_image.find_elements_by_tag_name("label")
         for i in range(0, len(image_elements)):
@@ -88,37 +88,37 @@ class Credit_Case(unittest.TestCase):
                     print("上传完成")
                     break
         div_fields = find_element(self.browser, By.CLASS_NAME, "comp-form-item-fields")
-        fields_elements = find_elemntsbyelemnt(div_fields, By.TAG_NAME, "label")
+        fields_elements = find_elements_by_element(div_fields, By.TAG_NAME, "label")
         for i in range(0, len(fields_elements) - 2):
             field_name = fields_elements[i].text
             if "姓名" == field_name:
                 element_send_key(
-                    find_elemntbyelemnt(find_elemntbyelemnt(fields_elements[i], By.XPATH, "./following::*"),
-                                        By.TAG_NAME, "input"), data.get_userinfo().name)
+                    find_element_by_element(find_element_by_element(fields_elements[i], By.XPATH, "./following::*"),
+                                            By.TAG_NAME, "input"), data.get_userinfo().name)
             elif "身份证号" == field_name:
                 element_send_key(
-                    find_elemntbyelemnt(find_elemntbyelemnt(fields_elements[i], By.XPATH, "./following::*"),
-                                        By.TAG_NAME, "input"), data.get_userinfo().idcard)
+                    find_element_by_element(find_element_by_element(fields_elements[i], By.XPATH, "./following::*"),
+                                            By.TAG_NAME, "input"), data.get_userinfo().idcard)
             elif "手机号" == field_name:
                 element_send_key(
-                    find_elemntbyelemnt(find_elemntbyelemnt(fields_elements[i], By.XPATH, "./following::*"),
-                                        By.TAG_NAME, "input"), data.get_userinfo().mobile)
+                    find_element_by_element(find_element_by_element(fields_elements[i], By.XPATH, "./following::*"),
+                                            By.TAG_NAME, "input"), data.get_userinfo().mobile)
             elif "意向价格" == field_name:
                 element_send_key(
-                    find_elemntbyelemnt(find_elemntbyelemnt(fields_elements[i], By.XPATH, "./following::*"),
-                                        By.TAG_NAME, "input"), "200000")
+                    find_element_by_element(find_element_by_element(fields_elements[i], By.XPATH, "./following::*"),
+                                            By.TAG_NAME, "input"), "200000")
             elif "银行卡号" == field_name:
                 element_send_key(
-                    find_elemntbyelemnt(find_elemntbyelemnt(fields_elements[i], By.XPATH, "./following::*"),
-                                        By.TAG_NAME, "input"), data.get_userinfo().bankcode)
+                    find_element_by_element(find_element_by_element(fields_elements[i], By.XPATH, "./following::*"),
+                                            By.TAG_NAME, "input"), data.get_userinfo().bankcode)
             elif "家庭住址" == field_name:
                 element_send_key(
-                    find_elemntbyelemnt(find_elemntbyelemnt(fields_elements[i], By.XPATH, "./following::*"),
-                                        By.TAG_NAME, "input"), data.get_userinfo().name + "的家庭住址")
+                    find_element_by_element(find_element_by_element(fields_elements[i], By.XPATH, "./following::*"),
+                                            By.TAG_NAME, "input"), data.get_userinfo().name + "的家庭住址")
             elif "签发机关" == field_name:
                 element_send_key(
-                    find_elemntbyelemnt(find_elemntbyelemnt(fields_elements[i], By.XPATH, "./following::*"),
-                                        By.TAG_NAME, "input"), data.get_userinfo().name + "的发证机关")
+                    find_element_by_element(find_element_by_element(fields_elements[i], By.XPATH, "./following::*"),
+                                            By.TAG_NAME, "input"), data.get_userinfo().name + "的发证机关")
 
         find_element(self.browser, By.CLASS_NAME, "el-checkbox__inner").click()  ##长期有效
 
@@ -152,34 +152,34 @@ class Credit_Case(unittest.TestCase):
                         print("上传完成")
                         break
             div_fields = find_elements(self.browser, By.CLASS_NAME, "comp-form-item-fields")
-            fields_elements = find_elemntsbyelemnt(div_fields[a], By.TAG_NAME, "label")
+            fields_elements = find_elements_by_element(div_fields[a], By.TAG_NAME, "label")
             for i in range(0, len(fields_elements) - 2):
                 field_name = fields_elements[i].text
                 if "姓名" == field_name:
                     element_send_key(
-                        find_elemntbyelemnt(find_elemntbyelemnt(fields_elements[i], By.XPATH, "./following::*"),
-                                            By.TAG_NAME, "input"), data.get_userinfo().name)
+                        find_element_by_element(find_element_by_element(fields_elements[i], By.XPATH, "./following::*"),
+                                                By.TAG_NAME, "input"), data.get_userinfo().name)
                 elif "身份证号" == field_name:
                     element_send_key(
-                        find_elemntbyelemnt(find_elemntbyelemnt(fields_elements[i], By.XPATH, "./following::*"),
-                                            By.TAG_NAME, "input"), data.get_userinfo().idcard)
+                        find_element_by_element(find_element_by_element(fields_elements[i], By.XPATH, "./following::*"),
+                                                By.TAG_NAME, "input"), data.get_userinfo().idcard)
                 elif "手机号" == field_name:
                     element_send_key(
-                        find_elemntbyelemnt(find_elemntbyelemnt(fields_elements[i], By.XPATH, "./following::*"),
-                                            By.TAG_NAME, "input"), data.get_userinfo().mobile)
+                        find_element_by_element(find_element_by_element(fields_elements[i], By.XPATH, "./following::*"),
+                                                By.TAG_NAME, "input"), data.get_userinfo().mobile)
 
                 elif "银行卡号" == field_name:
                     element_send_key(
-                        find_elemntbyelemnt(find_elemntbyelemnt(fields_elements[i], By.XPATH, "./following::*"),
-                                            By.TAG_NAME, "input"), data.get_userinfo().bankcode)
+                        find_element_by_element(find_element_by_element(fields_elements[i], By.XPATH, "./following::*"),
+                                                By.TAG_NAME, "input"), data.get_userinfo().bankcode)
                 elif "家庭住址" == field_name:
                     element_send_key(
-                        find_elemntbyelemnt(find_elemntbyelemnt(fields_elements[i], By.XPATH, "./following::*"),
-                                            By.TAG_NAME, "input"), data.get_userinfo().name + "的家庭住址")
+                        find_element_by_element(find_element_by_element(fields_elements[i], By.XPATH, "./following::*"),
+                                                By.TAG_NAME, "input"), data.get_userinfo().name + "的家庭住址")
                 elif "签发机关" == field_name:
                     element_send_key(
-                        find_elemntbyelemnt(find_elemntbyelemnt(fields_elements[i], By.XPATH, "./following::*"),
-                                            By.TAG_NAME, "input"), data.get_userinfo().name + "的发证机关")
+                        find_element_by_element(find_element_by_element(fields_elements[i], By.XPATH, "./following::*"),
+                                                By.TAG_NAME, "input"), data.get_userinfo().name + "的发证机关")
 
             find_elements(self.browser, By.CLASS_NAME, "el-checkbox__inner")[a].click()  ##长期有效
 
@@ -192,12 +192,12 @@ class Credit_Case(unittest.TestCase):
     def test_CarType0(self):
         cartype = "新车"
         div_fields = find_element(self.browser, By.CLASS_NAME, "comp-form-item-fields")
-        fields_elements = find_elemntsbyelemnt(div_fields, By.TAG_NAME, "label")
+        fields_elements = find_elements_by_element(div_fields, By.TAG_NAME, "label")
         for i in range(0, len(fields_elements)):
             field_name = fields_elements[i].text
             if "业务类型" == field_name:
-                element_click(find_elemntbyelemnt(find_elemntbyelemnt(fields_elements[i], By.XPATH, "./following::*"),
-                                                  By.TAG_NAME, "input"))
+                element_click(find_element_by_element(find_element_by_element(fields_elements[i], By.XPATH, "./following::*"),
+                                                      By.TAG_NAME, "input"))
         lis = find_elements(self.browser, By.TAG_NAME, "li")
         for i in range(0, len(lis)):
             if cartype == lis[i].text:
@@ -206,12 +206,12 @@ class Credit_Case(unittest.TestCase):
     def test_CarType1(self):
         cartype = "二手车"
         div_fields = find_element(self.browser, By.CLASS_NAME, "comp-form-item-fields")
-        fields_elements = find_elemntsbyelemnt(div_fields, By.TAG_NAME, "label")
+        fields_elements = find_elements_by_element(div_fields, By.TAG_NAME, "label")
         for i in range(0, len(fields_elements)):
             field_name = fields_elements[i].text
             if "业务类型" == field_name:
-                element_click(find_elemntbyelemnt(find_elemntbyelemnt(fields_elements[i], By.XPATH, "./following::*"),
-                                                  By.TAG_NAME, "input"))
+                element_click(find_element_by_element(find_element_by_element(fields_elements[i], By.XPATH, "./following::*"),
+                                                      By.TAG_NAME, "input"))
         lis = find_elements(self.browser, By.TAG_NAME, "li")
         for i in range(0, len(lis)):
             if cartype == lis[i].text:
@@ -220,12 +220,12 @@ class Credit_Case(unittest.TestCase):
     def test_Bank_E(self):
         bankname = "济南市胜利街支行"
         div_fields = find_element(self.browser, By.CLASS_NAME, "comp-form-item-fields")
-        fields_elements = find_elemntsbyelemnt(div_fields, By.TAG_NAME, "label")
+        fields_elements = find_elements_by_element(div_fields, By.TAG_NAME, "label")
         for i in range(0, len(fields_elements)):
             field_name = fields_elements[i].text
             if "贷款银行" == field_name:
-                element_click(find_elemntbyelemnt(find_elemntbyelemnt(fields_elements[i], By.XPATH, "./following::*"),
-                                                  By.TAG_NAME, "input"))
+                element_click(find_element_by_element(find_element_by_element(fields_elements[i], By.XPATH, "./following::*"),
+                                                      By.TAG_NAME, "input"))
         lis = find_elements(self.browser, By.TAG_NAME, "li")
         for i in range(0, len(lis)):
             if bankname == lis[i].text:
@@ -234,12 +234,12 @@ class Credit_Case(unittest.TestCase):
     def test_Bank_R(self):
         bankname = "建设银行"
         div_fields = find_element(self.browser, By.CLASS_NAME, "comp-form-item-fields")
-        fields_elements = find_elemntsbyelemnt(div_fields, By.TAG_NAME, "label")
+        fields_elements = find_elements_by_element(div_fields, By.TAG_NAME, "label")
         for i in range(0, len(fields_elements)):
             field_name = fields_elements[i].text
             if "贷款银行" == field_name:
-                element_click(find_elemntbyelemnt(find_elemntbyelemnt(fields_elements[i], By.XPATH, "./following::*"),
-                                                  By.TAG_NAME, "input"))
+                element_click(find_element_by_element(find_element_by_element(fields_elements[i], By.XPATH, "./following::*"),
+                                                      By.TAG_NAME, "input"))
         lis = find_elements(self.browser, By.TAG_NAME, "li")
         for i in range(0, len(lis)):
             if bankname == lis[i].text:
@@ -251,7 +251,7 @@ class Credit_Case(unittest.TestCase):
             if "提交申请" == buttons[i].text:
                 element_click(buttons[i])
         div = find_element(self.browser, By.CLASS_NAME, "el-message-box__btns")
-        buttons = find_elemntsbyelemnt(div, By.TAG_NAME, "button")
+        buttons = find_elements_by_element(div, By.TAG_NAME, "button")
         for i in range(0, len(buttons)):
             if "确定" == buttons[i].text:
                 element_click(buttons[i])

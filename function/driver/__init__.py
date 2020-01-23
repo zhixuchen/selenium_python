@@ -13,6 +13,7 @@ class Driver():
         self.driver_path = root_path + "selenium_python\\function\\driver\\chromedriver.exe"
         self.chrome_browser=webdriver.Chrome(self.driver_path)
         self.chrome_browser.maximize_window()
+        self.chrome_browser.implicitly_wait(30)
     def tearDown(self):
         self.chrome_browser.quit()
 

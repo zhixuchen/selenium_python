@@ -5,8 +5,22 @@
 # software: PyCharm
 
 
-if __name__ == '__main__':
+def test():
     try:
-        print("")
+        s = None
+        if s is None:
+            print(len(s))
+
+          # 这句不会执行，但是后面的except还是会走到
     except Exception as e:
-        print("")
+        print(e)
+
+    test1()
+def test1():
+    print("234234234")
+
+if __name__ == '__main__':
+
+    test()
+
+

@@ -52,7 +52,7 @@ class Login_Case(unittest.TestCase):
             catch_image(self.browser)
 
     def test_loginsSuccess(self):
-        '''登录成功'''
+        '''登录测试'''
         self.login()
         self.test_loginbypwd()
         tip = find_element(self.browser, By.CLASS_NAME, "header-title").text
@@ -68,382 +68,294 @@ class Card_Case(unittest.TestCase):
     def setUp(self):
         self.driver = globals()["driver"]
         self.browser = globals()["browser"]
+        self.n = 1
 
     def card(self):
-        print("开始处理开卡")
-        # find_element_click(self.browser,By.ID,"tab-card")
-        card_div = find_element(self.browser, By.ID, "pane-card")
-        labels = find_elemntsbyelemnt(card_div, By.TAG_NAME, "label")
+        '''开卡测试'''
+        try:
+            card_div = find_element(self.browser, By.ID, "pane-card")
+            labels = find_elements_by_element(card_div, By.TAG_NAME, "label")
+        except Exception as e:
+            print("执行用例失败："+e)
+        check_list = ["婚姻状况", "受教育程度", "住宅状况", "职务", "单位性质", "与开卡人关系", "职业及职级", "自购车状况", "卡片领取方式"]
+        select_div = find_elements(self.browser, By.CLASS_NAME, "comp-form-item-fields")[0]
+        self.check_select_list(check_list, select_div)
+        print("开卡页面下拉框选项校验通过")
         for label in labels:
-
-            if label.text in ["婚姻状况", "受教育程度", "住宅状况", "职务", "单位性质", "与开卡人关系", "职业及职级"]:
-                if "婚姻状况" == label.text:
-                    element_click(find_elemntbyelemnt(find_elemntbyelemnt(label, By.XPATH, "./following::*"),
-                                                      By.TAG_NAME, "input"))
-                    select_element = find_elementbytext(self.browser, By.TAG_NAME, "li", "未婚(无配偶)")
-                    element_click(select_element)
-
-
-                elif "受教育程度" == label.text:
-                    element_click(find_elemntbyelemnt(find_elemntbyelemnt(label, By.XPATH, "./following::*"),
-                                                      By.TAG_NAME, "input"))
-                    select_element = find_elementbytext(self.browser, By.TAG_NAME, "li", "博士及以上")
-                    element_click(select_element)
-                elif "住宅状况" == label.text:
-                    element_click(find_elemntbyelemnt(find_elemntbyelemnt(label, By.XPATH, "./following::*"),
-                                                      By.TAG_NAME, "input"))
-                    select_element = find_elementbytext(self.browser, By.TAG_NAME, "li", "自有住房")
-                    element_click(select_element)
-
-                elif "职务" == label.text:
-                    element_click(find_elemntbyelemnt(find_elemntbyelemnt(label, By.XPATH, "./following::*"),
-                                                      By.TAG_NAME, "input"))
-                    select_element = find_elementbytext(self.browser, By.TAG_NAME, "li", "部、省级、副部、副省级")
-                    element_click(select_element)
-
-
-                elif "单位性质" == label.text:
-                    element_click(find_elemntbyelemnt(find_elemntbyelemnt(label, By.XPATH, "./following::*"),
-                                                      By.TAG_NAME, "input"))
-
-                    select_element = find_elementbytext(self.browser, By.TAG_NAME, "li", "国有")
-                    element_click(select_element)
-
-                elif "职业及职级" == label.text:
-                    element = find_elemntbyelemnt(find_elemntbyelemnt(label, By.XPATH, "./following::*"),
-                                                  By.TAG_NAME, "input")
-                    self.browser.execute_script("arguments[0].click()", element)
-
-                    select_element = find_elementbytext(self.browser, By.TAG_NAME, "li", "公务员")
-                    element_click(select_element)
-
-
-                elif "与开卡人关系" == label.text:
-                    element_click(find_elemntbyelemnt(find_elemntbyelemnt(label, By.XPATH, "./following::*"),
-                                                      By.TAG_NAME, "input"))
-
-                    select_element = find_elementbytext(self.browser, By.TAG_NAME, "li", "父子")
-                    element_click(select_element)
-
-            elif label.text in ["住宅邮编", "住宅详细地址", "单位名称", "单位邮编", "详细地址", "联系人姓名", "联系人手机"]:
-                element_send_key(
-                    find_elemntbyelemnt(find_elemntbyelemnt(label, By.XPATH, "./following::*"),
-                                        By.TAG_NAME, "input"), label.text)
-                if "联系人手机" == label.text:
-                    element_send_key(
-                        find_elemntbyelemnt(find_elemntbyelemnt(label, By.XPATH, "./following::*"),
-                                            By.TAG_NAME, "input"), data.user_info.mobile)
-
-            elif label.text in ["手机号码", "自购车状况", "卡片领取方式", "领卡地区号", "领卡网点号", "身份证号", "姓名", "证件有效期"]:
-                defult = find_elemntbyelemnt(find_elemntbyelemnt(label, By.XPATH, "./following::*"),
-                                             By.TAG_NAME, "input").get_attribute('value')
-                try:
-                    self.check_defult(label.text, defult)
-                except Exception as e:
-                    print("断言校验错误：" + e)
-
-            elif label.text in ["住宅地址", "何时入住", "单位电话", "单位地址", "何时入职", "联系人电话"]:
-
-                if label.text in ["住宅地址", "单位地址"]:
-
-                    element = find_elemntbyelemnt(find_elemntbyelemnt(label, By.XPATH, "./following::*"),
-                                                  By.TAG_NAME, "input")
-                    self.browser.execute_script("arguments[0].click()", element)
-                    select_s_element = find_elementbytext(self.browser, By.TAG_NAME, "li", "浙江省")
-                    element_click(select_s_element)
-                    select_c_element = find_elementbytext(self.browser, By.TAG_NAME, "li", "杭州市")
-                    element_click(select_c_element)
-                    select_q_element = find_elementbytext(self.browser, By.TAG_NAME, "li", "西湖区")
-                    element_click(select_q_element)
-
-                elif label.text in ["何时入住", "何时入职"]:
-                    time_element = find_elemntbyelemnt(find_elemntbyelemnt(label, By.XPATH, "./following::*"),
-                                                       By.TAG_NAME, "input")
-                    if label.text == "何时入住":
-                        element_send_key(time_element, "2019-01-05")
-                    elif label.text == "何时入职":
-                        element_send_key(time_element, "201801")
-
-                if label.text in ["单位电话", "联系人电话"]:
-                    area_element = find_elemntsbyelemnt(find_elemntbyelemnt(label, By.XPATH, "./following::*"),
-                                                        By.TAG_NAME, "input")[0]
-                    area_element.send_keys("0577")
-                    mobile_element = find_elemntsbyelemnt(find_elemntbyelemnt(label, By.XPATH, "./following::*"),
-                                                          By.TAG_NAME, "input")[1]
-                    mobile_element.click()
-                    mobile_element = find_elemntsbyelemnt(find_elemntbyelemnt(label, By.XPATH, "./following::*"),
-                                                          By.TAG_NAME, "input")[1]
-                    mobile_element.send_keys("63891171")
-
-            # if label.text in ["婚姻状况", "受教育程度", "住宅状况", "职务", "单位性质", "与开卡人关系", "职业及职级", "自购车状况", "卡片领取方式"]:
-            #     try:
-            #         self.check_select(label.text,select_element)
-            #     except Exception as e:
-            #         print("校验下拉选项出错：" + e)
+            try:
+                input_element = find_next_input_by_element(label)
+                if label.text in ["婚姻状况", "受教育程度", "住宅状况", "职务", "单位性质", "与开卡人关系"]:
+                    element_click(input_element)
+                    if "婚姻状况" == label.text:
+                        self.click_selcet_li_by_text("未婚(无配偶)")
+                    elif "受教育程度" == label.text:
+                        self.click_selcet_li_by_text("博士及以上")
+                    elif "住宅状况" == label.text:
+                        self.click_selcet_li_by_text("自有住房")
+                    elif "职务" == label.text:
+                        self.click_selcet_li_by_text("部、省级、副部、副省级")
+                    elif "单位性质" == label.text:
+                        self.click_selcet_li_by_text("国有")
+                    elif "与开卡人关系" == label.text:
+                        self.click_selcet_li_by_text("父子")
+                elif label.text in ["住宅邮编", "住宅详细地址", "单位名称", "单位邮编", "详细地址", "联系人姓名", "联系人手机"]:
+                    element_send_key(input_element, label.text)
+                    if "联系人手机" == label.text:
+                        element_send_key(input_element, data.get_userinfo().mobile)
+                elif label.text in ["住宅地址", "何时入住", "单位电话", "单位地址", "何时入职", "联系人电话", "职业及职级"]:
+                    element = input_element
+                    if label.text in ["住宅地址", "单位地址"]:
+                        self.n = self.n + 1
+                        element_click_script(self.browser, element)
+                        live_element_div = find_element(self.browser, By.XPATH, "/html/body/div[" + str(self.n) + "]")
+                        sheng_element_ul = find_elements_by_element(live_element_div, By.TAG_NAME, "ul")[0]
+                        select_s_element = find_element_by_text_element(sheng_element_ul, By.TAG_NAME, "li", "浙江省")
+                        element_click(select_s_element)
+                        shi_element_ul = find_elements_by_element(live_element_div, By.TAG_NAME, "ul")[1]
+                        select_c_element = find_element_by_text_element(shi_element_ul, By.TAG_NAME, "li", "杭州市")
+                        element_click(select_c_element)
+                        qu_element_ul = find_elements_by_element(live_element_div, By.TAG_NAME, "ul")[2]
+                        select_q_element = find_element_by_text_element(qu_element_ul, By.TAG_NAME, "li", "西湖区")
+                        element_click(select_q_element)
+                    elif "职业及职级" == label.text:
+                        element_click_script(self.browser, element)
+                        self.click_selcet_li_by_text("公务员")
+                    elif label.text in ["何时入住", "何时入职"]:
+                        if label.text == "何时入住":
+                            element_send_key(element, "2019-01-05")
+                        elif label.text == "何时入职":
+                            element_send_key(element, "201801")
+                    if label.text in ["单位电话", "联系人电话"]:
+                        area_element = find_next_inputs_by_element(label)[0]
+                        area_element.send_keys("0577")
+                        mobile_element = find_next_inputs_by_element(label)[1]
+                        mobile_element.click()
+                        mobile_element = find_next_inputs_by_element(label)[1]
+                        mobile_element.send_keys("63891171")
+            except Exception as e:
+                print("执行用例失败：" + e)
+            if label.text in ["手机号码", "自购车状况", "卡片领取方式", "领卡地区号", "领卡网点号", "身份证号", "姓名", "证件有效期"]:
+                defult = input_element.get_attribute('value')
+                self.check_defult(label.text, defult)
+        print("开卡页面默认值校验通过")
 
     def stage(self):
-        print("开始处理分期信息")
-        time.sleep(2)
-        find_element_click(self.browser, By.ID, "tab-stage")
-        stage_div = find_element(self.browser, By.ID, "pane-stage")
-        labels = find_elemntsbyelemnt(stage_div, By.TAG_NAME, "label")
-        inputs = find_elemntsbyelemnt(stage_div, By.TAG_NAME, "input")
+        '''分期信息测试'''
+        try:
+            tab_element = find_element(self.browser, By.ID, "tab-stage")
+            element_click(tab_element)
+        except Exception as e:
+            print("执行用例报错："+e)
+        check_list = ["业务模式", "还款期限", "申请人与抵押物权属人关系", "收款对象类型"]
+        select_div = find_elements(self.browser, By.CLASS_NAME, "comp-form-item-fields")[1]
+        self.check_select_list(check_list, select_div)
+        print("分期页面下拉框选项校验通过")
+        try:
+            stage_div = find_element(self.browser, By.ID, "pane-stage")
+            labels = find_elements_by_element(stage_div, By.TAG_NAME, "label")
+            inputs = find_elements_by_element(stage_div, By.TAG_NAME, "input")
+            for label in labels:
+                input_element = find_next_input_by_element(label)
+                if label.text in ["商品名称", "还款期限"]:  # 必填下拉框
+                    element_click(input_element)
+                    if "商品名称" == label.text:
+                        car_div = find_element(self.browser, By.CLASS_NAME, "cascader-panel")
+                        car_first_div = find_element_by_element(car_div, By.CSS_SELECTOR,
+                                                                "[class='cascader-content top-menu']")
+                        element_click(find_element_by_text_element(car_first_div, By.TAG_NAME, "li", "亚琛施耐泽-乘用"))
+                        car_sencond_div = find_element_by_element(car_div, By.CSS_SELECTOR,
+                                                                  "[class='cascader-content second-menu']")
+                        element_click(find_element_by_text_element(car_sencond_div, By.TAG_NAME, "li", "亚琛施耐泽S5[进口]"))
+                        car_last_div = find_element_by_element(car_div, By.CSS_SELECTOR,
+                                                               "[class='cascader-content last-menu']")
+                        element_click(
+                            find_element_by_text_element(car_last_div, By.TAG_NAME, "li",
+                                                         "2012款-AC-Schnitzer-S5-3.0T-A/MT猎鹰版"))
+                        element_click(inputs[1])
+                        self.click_selcet_li_by_text("进口车")
+                    elif "还款期限" == label.text:
+                        self.click_selcet_li_by_text("36 期")
+                        repay_period = input_element.get_attribute("value")
+                elif label.text in ["实际贷款额", "总利率", "还款人月均总收入", "其他月还款额", "其他负债余额", "个人总资产"]:  ##必填输入框
+                    element_click(input_element)
+                    if "实际贷款额" == label.text:
+                        element_send_key(input_element, "200000")
+                        contract_loan_money = input_element.get_attribute("value")
+                    elif "总利率" == label.text:
+                        element_send_key(input_element, "25.5")
+                        company_service_rate = input_element.get_attribute("value")
+                    elif "还款人月均总收入" == label.text:
+                        element_send_key(input_element, "8000")
+                        monthincome = input_element.get_attribute("value")
+                    elif "其他月还款额" == label.text:
+                        element_send_key(input_element, "4200")
+                        monrepayamt = input_element.get_attribute("value")
+                    elif "其他负债余额" == label.text:
+                        element_send_key(input_element, "1500000")
+                    elif "个人总资产" == label.text:
+                        element_send_key(input_element, "3000000")
+                    elif "权属人姓名" == label.text:
+                        element_send_key(input_element, data.get_userinfo().name)
+                elif label.text in ["现住房面积", "权属人姓名", "关联人月收入", "抵押合同编号"]:  ##页面特殊处理
+                    self.browser.execute_script("arguments[0].click()", input_element)
+                    if "现住房面积" == label.text:
+                        element_send_key(input_element, "123.8")
+                    elif "权属人姓名" == label.text:
+                        element_send_key(input_element, data.get_userinfo().name)
+                    elif "关联人月收入" == label.text:
+                        element_send_key(input_element, "5000")
+                    elif "抵押合同编号" == label.text:
+                        element_send_key(input_element, "HTLINRUN101211")
+                elif label.text in ["发动机号", "他项权证号", "申请人与抵押物权属人关系"]:  # 非必填
+                    element_click(input_element)
+                    if "发动机号" == label.text:
+                        element_send_key(input_element, "FAGDHJSJKK")
+                    elif "他项权证号" == label.text:
+                        element_send_key(input_element, "FHSKJI00555DA")
+                    elif "申请人与抵押物权属人关系" == label.text:
+                        self.click_selcet_li_by_text("本人")
+                elif label.text in ["业务模式", "车架号", "车辆价格", "首付金额", "首付比例", "收入还贷比", "分期手续费率", "首月还款", "月还款金额", "手续费总额",
+                                    "汽车经销商全称", "最高抵押率", "收款对象类型", "抵押品价值", "车损险投保金额", "贷款金额合计", "抵押品名称"]:
+                    if label.text in ["业务模式", "车架号", "收款对象类型", "抵押品名称", "汽车经销商全称", "分期手续费率", "最高抵押率"]:
+                        defult = input_element.get_attribute("value")
+                        self.check_defult(label.text, defult)
+                        if label.text == "分期手续费率":
+                            commission_fee_rate = defult
+                    elif label.text in ["车辆价格", "首付金额", "首付比例", "收入还贷比", "首月还款", "月还款金额", "手续费总额", "抵押品价值", "车损险投保金额",
+                                        "贷款金额合计"]:
+                        if "车辆价格" == label.text:
+                            car_price = input_element.get_attribute("value")
+                        elif "首付金额" == label.text:
+                            sf_money = input_element.get_attribute("value")
+                        elif "首付比例" == label.text:
+                            sf_proportion = input_element.get_attribute("value")
+                        elif "收入还贷比" == label.text:
+                            contract_sf_ratio = input_element.get_attribute("value")
+                        elif "首月还款" == label.text:
+                            first_month_money = input_element.get_attribute("value")
+                        elif "月还款金额" == label.text:
+                            month_money = input_element.get_attribute("value")
+                        elif "手续费总额" == label.text:
+                            poundage_amount = input_element.get_attribute("value")
+                        elif "抵押品价值" == label.text:
+                            mortvalue = input_element.get_attribute("value")
+                        elif "车损险投保金额" == label.text:
+                            insureamt = input_element.get_attribute("value")
+                        elif "贷款金额合计" == label.text:
+                            loan_money = input_element.get_attribute("value")
+            finance_data = {"car_price": car_price, "sf_money": sf_money, "sf_proportion": sf_proportion,
+                            "contract_sf_ratio": contract_sf_ratio, "first_month_money": first_month_money,
+                            "month_money": month_money,
+                            "poundage_amount": poundage_amount,
+                            "insureamt": insureamt, "loan_money": loan_money, "mortvalue": mortvalue,
+                            "monthincome": monthincome, "monrepayamt": monrepayamt,
+                            "commission_fee_rate": commission_fee_rate,
+                            "contract_loan_money": contract_loan_money,
+                            "company_service_rate": company_service_rate, "repay_period": repay_period}
 
-        for label in labels:
-            input_element = find_elemntbyelemnt(find_elemntbyelemnt(label, By.XPATH, "./following::*"),
-                                                By.TAG_NAME, "input")
-            if label.text in ["商品名称", "还款期限"]:  # 必填下拉框
-                element_click(input_element)
-                if "商品名称" == label.text:
-                    element_click(find_elementbytext(self.browser, By.TAG_NAME, "li", "亚琛施耐泽-乘用"))
-                    element_click(find_elementbytext(self.browser, By.TAG_NAME, "li", "亚琛施耐泽S5[进口]"))
-                    element_click(
-                        find_elementbytext(self.browser, By.TAG_NAME, "li", "2012款-AC-Schnitzer-S5-3.0T-A/MT猎鹰版"))
-                    element_click(inputs[1])
-                    element_click(find_elementbytext(self.browser, By.TAG_NAME, "li", "进口车"))
-                elif "还款期限" == label.text:
-                    element_click(find_elementbytext(self.browser, By.TAG_NAME, "li", "36 期"))
-                    repay_period = input_element.get_attribute("value")
-
-            elif label.text in ["实际贷款额", "总利率", "还款人月均总收入", "其他月还款额", "其他负债余额", "个人总资产"]:  ##必填输入框
-                element_click(input_element)
-                if "实际贷款额" == label.text:
-                    element_send_key(input_element, "200000")
-                    contract_loan_money = input_element.get_attribute("value")
-                elif "总利率" == label.text:
-                    element_send_key(input_element, "25.5")
-                    company_service_rate = input_element.get_attribute("value")
-                elif "还款人月均总收入" == label.text:
-                    element_send_key(input_element, "8000")
-                    monthincome = input_element.get_attribute("value")
-                elif "其他月还款额" == label.text:
-                    element_send_key(input_element, "4200")
-                    monrepayamt = input_element.get_attribute("value")
-                elif "其他负债余额" == label.text:
-                    element_send_key(input_element, "1500000")
-                elif "个人总资产" == label.text:
-                    element_send_key(input_element, "3000000")
-                elif "权属人姓名" == label.text:
-                    element_send_key(input_element, data.get_userinfo().name)
-            elif label.text in ["现住房面积", "权属人姓名", "关联人月收入"]:  ##页面特殊处理
-                self.browser.execute_script("arguments[0].click()", input_element)
-                if "现住房面积" == label.text:
-                    element_send_key(input_element, "123.8")
-                elif "权属人姓名" == label.text:
-                    element_send_key(input_element, data.get_userinfo().name)
-                elif "关联人月收入" == label.text:
-                    element_send_key(input_element, "5000")
-            elif label.text in ["发动机号", "他项权证号", "抵押合同编号", "申请人与抵押物权属人关系"]:  # 非必填
-                element_click(input_element)
-                if "发动机号" == label.text:
-                    element_send_key(input_element, "FAGDHJSJKK")
-
-                elif "他项权证号" == label.text:
-                    element_send_key(input_element, "FHSKJI00555DA")
-                elif "抵押合同编号" == label.text:
-                    element_send_key(input_element, "HTLINRUN101211")
-                elif "申请人与抵押物权属人关系" == label.text:
-                    element_click(find_elementbytext(self.browser, By.TAG_NAME, "li", "本人"))
-            elif label.text in ["业务模式", "车架号", "车辆价格", "首付金额", "首付比例", "收入还贷比", "分期手续费率", "首月还款", "月还款金额", "手续费总额",
-                                "汽车经销商全称", "最高抵押率", "收款对象类型", "抵押品价值", "车损险投保金额", "贷款金额合计", "抵押品名称"]:
-                if label.text in ["业务模式", "车架号", "收款对象类型", "抵押品名称", "汽车经销商全称", "分期手续费率", "最高抵押率"]:
-                    defult = input_element.get_attribute("value")
-                    self.check_defult(label.text, defult)
-                    if label.text == "分期手续费率":
-                        commission_fee_rate = defult
-                elif label.text in ["车辆价格", "首付金额", "首付比例", "收入还贷比", "首月还款", "月还款金额", "手续费总额", "抵押品价值", "车损险投保金额",
-                                    "贷款金额合计"]:
-                    if "车辆价格" == label.text:
-                        car_price = input_element.get_attribute("value")
-                    elif "首付金额" == label.text:
-                        sf_money = input_element.get_attribute("value")
-                    elif "首付比例" == label.text:
-                        sf_proportion = input_element.get_attribute("value")
-                    elif "收入还贷比" == label.text:
-                        contract_sf_ratio = input_element.get_attribute("value")
-                    elif "首月还款" == label.text:
-                        first_month_money = input_element.get_attribute("value")
-                    elif "月还款金额" == label.text:
-                        month_money = input_element.get_attribute("value")
-                    elif "手续费总额" == label.text:
-                        poundage_amount = input_element.get_attribute("value")
-                    elif "抵押品价值" == label.text:
-                        mortvalue = input_element.get_attribute("value")
-                    elif "车损险投保金额" == label.text:
-                        insureamt = input_element.get_attribute("value")
-                    elif "贷款金额合计" == label.text:
-                        loan_money = input_element.get_attribute("value")
-        finance_data = {"car_price": car_price, "sf_money": sf_money, "sf_proportion": sf_proportion,
-                        "contract_sf_ratio": contract_sf_ratio, "first_month_money": first_month_money,
-                        "month_money": month_money,
-                        "poundage_amount": poundage_amount,
-                        "insureamt": insureamt, "loan_money": loan_money, "mortvalue": mortvalue,
-                        "monthincome": monthincome, "monrepayamt": monrepayamt,
-                        "commission_fee_rate": commission_fee_rate,
-                        "contract_loan_money": contract_loan_money,
-                        "company_service_rate": company_service_rate, "repay_period": repay_period}
-        print(finance_data)
+        except Exception as e:
+            print("执行用例报错：" + e)
+        print("分期页面默认值校验通过")
         self.check_finance(finance_data)
-
+        print("分期页面金额计算校验通过")
+    def click_selcet_li_by_text(self, text):
+        self.n = self.n + 1
+        element_div = find_element(self.browser, By.XPATH, "/html/body/div[" + str(self.n) + "]")
+        select_element = find_element_by_text_element(element_div, By.TAG_NAME, "li", text)
+        element_click(select_element)
     def check_defult(self, check, defult):
-        if "领卡地区号" == check:
-            self.assertEqual("10001", defult)
-        elif "领卡网点号" == check:
-            self.assertEqual("10002", defult)
-        elif "手机号码" == check:
-            self.assertEqual(11, len(defult))
-        elif "自购车状况" == check:
-            self.assertEqual("无", defult)
-        elif "卡片领取方式" == check:
-            self.assertEqual("自取", defult)
-        elif "身份证号" == check:
-            self.assertEqual(18, len(defult))
-        elif "姓名" == check:
-            self.assertIsNotNone(defult)
-        elif "证件有效期" == check:
-            self.assertIsNotNone(defult)
-        elif "业务模式" == check:
-            self.assertEqual("抵押+合作机构保证(先放款后抵押)", defult)
-        elif "车架号" == check:
-            self.assertEqual("00000000000000000", defult)
-        elif "车辆价格" == check:
-            self.assertIsNotNone(defult)
-        elif "收款对象类型" == check:
-            self.assertEqual("第三方机构", defult)
-        elif "抵押品名称" == check:
-            self.assertEqual("汽车", defult)
+        title_div = find_elements(self.browser, By.CLASS_NAME, "lcomp-module-pane")[0]
+        title_element = find_element_by_text_element(title_div, By.TAG_NAME, "span", "业务品种")
+        car_type = find_next_element(title_element).text
+        if check in ["手机号码", "身份证号", "姓名", "证件有效期", "车辆价格"]:
+            if "手机号码" == check:
+                error_msg = "手机号码为空"
+            elif "身份证号" == check:
+                error_msg = "身份证号为空"
+            elif "姓名" == check:
+                error_msg = "姓名为空"
+            elif "证件有效期" == check:
+                error_msg = "证件有效期为空"
+            elif "车辆价格" == check:
+                error_msg = "车辆价格为空"
+            self.checkIsNotNone(defult, error_msg)
+        else:
+            if "领卡地区号" == check:
+                error_msg = "领卡地区号错误"
+                check_value = "10001"
+            elif "领卡网点号" == check:
+                error_msg = "领卡网点号错误"
+                check_value = "10002"
+            elif "业务模式" == check:
+                error_msg = "业务模式错误"
+                check_value = "抵押+合作机构保证(先放款后抵押)"
+            elif "自购车状况" == check:
+                error_msg = "自购车状况错误"
+                check_value = "无"
+            elif "卡片领取方式" == check:
+                error_msg = "卡片领取方式错误"
+                check_value = "自取"
+            elif "车架号" == check:
+                error_msg = "车架号错误"
+                check_value = "00000000000000000"
+            elif "收款对象类型" == check:
+                error_msg = "收款对象类型错误"
+                check_value = "第三方机构"
+            elif "抵押品名称" == check:
+                error_msg = "抵押品名称错误"
+                check_value = "汽车"
+            elif "汽车经销商全称" == check:
+                error_msg = "汽车经销商全称错误"
+                check_value = "山东林润汽车销售服务有限公司"
+            elif "分期手续费率" == check:
+                error_msg = "分期手续费率错误"
+                check_value = "9.5"
+            elif "最高抵押率" == check:
+                error_msg = "最高抵押率错误"
+                if car_type=="新车":
+                    check_value = "80"
+                elif car_type=="二手车":
+                    check_value = "70"
+            self.checkEqual(check_value, defult, error_msg)
 
-        elif "汽车经销商全称" == check:
-            self.assertEqual("山东林润汽车销售服务有限公司", defult)
-        elif "分期手续费率" == check:
-            self.assertEqual("9.5", defult)
-        elif "最高抵押率" == check:
-            self.assertEqual("80", defult)
-
-    def check_select(self, check, select_element):
-        if "婚姻状况" == check:
-            lis = find_elemntsbyelemnt(
-                find_elemntbyelemnt(select_element, By.XPATH, ".."),
-                By.TAG_NAME, "li")
-            self.assertEqual("未婚(无配偶)", lis[0].text)
-            self.assertEqual("已婚(有配偶)", lis[1].text)
-            self.assertEqual("分居", lis[2].text)
-            self.assertEqual("离异", lis[3].text)
-            self.assertEqual("丧偶", lis[4].text)
-            self.assertEqual("其他", lis[5].text)
-        elif "受教育程度" == check:
-            lis = find_elemntsbyelemnt(
-                find_elemntbyelemnt(select_element, By.XPATH, ".."),
-                By.TAG_NAME, "li")
-            self.assertEqual("博士及以上", lis[0].text)
-            self.assertEqual("硕士研究生", lis[1].text)
-            self.assertEqual("大学本科", lis[2].text)
-            self.assertEqual("大学专科/电大", lis[3].text)
-            self.assertEqual("中专", lis[4].text)
-            self.assertEqual("技工学校", lis[5].text)
-            self.assertEqual("高中", lis[6].text)
-            self.assertEqual("初中", lis[7].text)
-            self.assertEqual("小学及以下", lis[8].text)
-        elif "住宅状况" == check:
-            lis = find_elemntsbyelemnt(
-                find_elemntbyelemnt(select_element, By.XPATH, ".."),
-                By.TAG_NAME, "li")
-            self.assertEqual("自有住房", lis[0].text)
-            self.assertEqual("分期付款购房", lis[1].text)
-            self.assertEqual("租房", lis[2].text)
-            self.assertEqual("其他", lis[3].text)
-            self.assertEqual("集体宿舍", lis[4].text)
-            self.assertEqual("单位分配", lis[5].text)
-        elif "职务" == check:
-            lis = find_elemntsbyelemnt(
-                find_elemntbyelemnt(select_element, By.XPATH, ".."),
-                By.TAG_NAME, "li")
-            self.assertEqual("部、省级、副部、副省级", lis[0].text)
-            self.assertEqual("董事/司、局、地、厅级", lis[1].text)
-            self.assertEqual("总经理/县处级", lis[2].text)
-            self.assertEqual("科级/部门经理", lis[3].text)
-            self.assertEqual("职员/科员级", lis[4].text)
-        elif "单位性质" == check:
-            lis = find_elemntsbyelemnt(
-                find_elemntbyelemnt(select_element, By.XPATH, ".."),
-                By.TAG_NAME, "li")
-            print(len(lis))
-            for i in range(0, len(lis)):
-                time.sleep(0.1)
-                print("lis" + str(i) + ":" + lis[i].text)
-            self.assertEqual("国有", lis[0].text)
-            self.assertEqual("集体", lis[1].text)
-            self.assertEqual("国有控股", lis[2].text)
-            self.assertEqual("集体控股", lis[3].text)
-            self.assertEqual("三资", lis[4].text)
-            self.assertEqual("私营", lis[5].text)
-            self.assertEqual("个体", lis[6].text)
-            self.assertEqual("外贸", lis[7].text)
-            self.assertEqual("股份合作", lis[8].text)
-            self.assertEqual("其他股份制", lis[9].text)
-            self.assertEqual("民营", lis[10].text)
-            self.assertEqual("联营", lis[11].text)
-            self.assertEqual("乡镇企业", lis[12].text)
-            self.assertEqual("其他", lis[13].text)
-        elif "职业及职级" == check:
-            lis = find_elemntsbyelemnt(
-                find_elemntbyelemnt(select_element, By.XPATH, ".."),
-                By.TAG_NAME, "li")
-            self.assertEqual("公务员", lis[0].text)
-            self.assertEqual("事业单位员工", lis[1].text)
-            self.assertEqual("职员", lis[2].text)
-            self.assertEqual("军人", lis[3].text)
-            self.assertEqual("自由职业者", lis[4].text)
-            self.assertEqual("工人", lis[5].text)
-            self.assertEqual("农民", lis[6].text)
-            self.assertEqual("邮电通讯行业职员", lis[7].text)
-            self.assertEqual("房地产行业职员", lis[8].text)
-            self.assertEqual("交通运输行业职员", lis[9].text)
-            self.assertEqual("法律/司法行业职员", lis[10].text)
-            self.assertEqual("文化/娱乐/体育行业职员", lis[11].text)
-            self.assertEqual("媒介/广告行业职员", lis[12].text)
-            self.assertEqual("科研/教育行业职员", lis[13].text)
-            self.assertEqual("学生", lis[14].text)
-            self.assertEqual("计算机/网络行业职员", lis[15].text)
-            self.assertEqual("商业贸易行业职员", lis[16].text)
-            self.assertEqual("银行/金融/证券/投资行业职员", lis[17].text)
-            self.assertEqual("税务行业职员", lis[18].text)
-            self.assertEqual("咨询行业职员", lis[19].text)
-            self.assertEqual("社会服务行业职员", lis[20].text)
-            self.assertEqual("旅游/饭店行业职员", lis[21].text)
-            self.assertEqual("健康/医疗服务行业职员", lis[22].text)
-            self.assertEqual("管理人员", lis[23].text)
-            self.assertEqual("技术人员", lis[24].text)
-            self.assertEqual("文体明星", lis[25].text)
-            self.assertEqual("无职业", lis[26].text)
-            self.assertEqual("私人业主", lis[27].text)
-        elif "自购车状况" == check:
-            lis = find_elemntsbyelemnt(
-                find_elemntbyelemnt(find_elementbytext(self.browser, By.TAG_NAME, "li", "有"), By.XPATH, ".."),
-                By.TAG_NAME, "li")
-            self.assertEqual("有", lis[0].text)
-            self.assertEqual("无", lis[1].text)
-        elif "与开卡人关系" == check:
-            lis = find_elemntsbyelemnt(
-                find_elemntbyelemnt(select_element, By.XPATH, ".."),
-                By.TAG_NAME, "li")
-            self.assertEqual("父子", lis[0].text)
-            self.assertEqual("母子", lis[1].text)
-            self.assertEqual("兄弟姐妹", lis[2].text)
-            self.assertEqual("亲属", lis[3].text)
-            self.assertEqual("夫妻", lis[4].text)
-            self.assertEqual("同学", lis[5].text)
-            self.assertEqual("同乡", lis[6].text)
-            self.assertEqual("朋友", lis[7].text)
-            self.assertEqual("同事", lis[8].text)
-        elif "卡片领取方式" == check:
-            lis = find_elemntsbyelemnt(
-                find_elemntbyelemnt(select_element, By.XPATH, ".."),
-                By.TAG_NAME, "li")
-            self.assertEqual("自取", lis[0].text)
-            self.assertEqual("寄送单位地址", lis[1].text)
-            self.assertEqual("寄送住宅地址", lis[2].text)
-
+    def check_select_list(self, check_list, select_div):
+        for check in check_list:
+            label = find_element_by_text_element(select_div, By.TAG_NAME, "label", check)
+            next_div = find_next_element(label)
+            ul = find_element_by_element(next_div, By.TAG_NAME, "ul")
+            lis = find_elements_by_element(ul, By.TAG_NAME, "li")
+            if "婚姻状况" == check:
+                true_list = ["未婚(无配偶)", "已婚(有配偶)", "分居", "离异", "丧偶", "其他"]
+            elif "受教育程度" == check:
+                true_list = ["博士及以上", "硕士研究生", "大学本科", "大学专科/电大", "中专", "技工学校", "高中", "初中", "小学及以下"]
+            elif "住宅状况" == check:
+                true_list = ["自有住房", "分期付款购房", "租房", "其他", "集体宿舍", "单位分配", ]
+            elif "职务" == check:
+                true_list = ["部、省级、副部、副省级", "董事/司、局、地、厅级", "总经理/县处级", "科级/部门经理", "职员/科员级"]
+            elif "单位性质" == check:
+                true_list = ["国有", "集体", "国有控股", "集体控股", "三资", "私营", "个体", "外贸", "股份合作", "其他股份制", "民营", "联营", "乡镇企业",
+                             "其他"]
+            elif "职业及职级" == check:
+                true_list = ["公务员", "事业单位员工", "职员", "军人", "自由职业者", "工人", "农民", "邮电通讯行业职员", "房地产行业职员", "交通运输行业职员",
+                             "法律/司法行业职员", "文化/娱乐/体育行业职员", "媒介/广告行业职员", "科研/教育行业职员", "学生", "计算机/网络行业职员", "商业贸易行业职员",
+                             "银行/金融/证券/投资行业职员", "税务行业职员", "咨询行业职员", "社会服务行业职员", "旅游/饭店行业职员", "健康/医疗服务行业职员", "管理人员",
+                             "技术人员", "文体明星", "无职业", "私人业主"]
+            elif "自购车状况" == check:
+                true_list = ["有", "无", ]
+            elif "与开卡人关系" == check:
+                true_list = ["父子", "母子", "兄弟姐妹", "亲属", "夫妻", "同学", "同乡", "朋友", "同事"]
+            elif "卡片领取方式" == check:
+                true_list = ["自取", "寄送单位地址", "寄送住宅地址"]
+            elif "业务模式" == check:
+                true_list = ["抵押+合作机构保证(先放款后抵押)"]
+            elif "还款期限" == check:
+                true_list = ["12 期", "24 期", "36 期"]
+            elif "申请人与抵押物权属人关系" == check:
+                true_list = ["本人", "父母", "配偶", "子女"]
+            elif "收款对象类型" == check:
+                true_list = ["第三方机构", "合作单位"]
+            for i in range(0, len(true_list)):
+                self.checkEqual(true_list[i], lis[i].get_attribute("textContent"), check + "列表校验失败")
     def check_finance(self, finance_data):
         car_price = float(finance_data["car_price"])  # 车辆价格
         loan_money = float(finance_data["loan_money"])  # 贷款金额合计
@@ -469,49 +381,110 @@ class Card_Case(unittest.TestCase):
         true_month_money = int(loan_money / repay_period) + int(poundage_amount / repay_period)  ##两个取整相加
         true_poundage_amount = round((loan_money * commission_fee_rate) / 100)
         true_loan_money = int(math.ceil((contract_loan_money + contract_loan_money * (
-                    company_service_rate - commission_fee_rate) / 100) / 100)) * 100  # 取百
-        self.assertEqual(ture_sf_money, sf_money, "首付金额计算有误（首付金额=车辆价格-贷款金额合计）")
-        self.assertEqual(true_sf_proportion, sf_proportion, "首付比例计算有误（首付比例=首付金额/车辆价格*100%）")
-        self.assertEqual(ture_first_month_money, first_month_money, "首月还款计算有误（首月还款=（贷款金额合计+手续费总额）-月还款金额×（贷款期数-1））")
-        self.assertEqual(true_month_money, month_money, "月还款金额计算有误(月还款金额=贷款金额合计/贷款期数+手续费总额/贷款期数)")
-        self.assertEqual(true_poundage_amount, poundage_amount, "手续费总额计算有误(手续费总额=贷款金额合计×分期手续费率)")
-        self.assertEqual(true_loan_money, loan_money, "贷款金额合计计算有误(贷款金额合计 = 实际贷款额 + 实际贷款额×（总利率 - 分期手续费率）)")
-        self.assertEqual(ture_contract_sf_ratio, contract_sf_ratio, "收入还贷比计算有误(收入还贷比=其他月还款额/还款人月均总收入)")
-        self.assertEqual(insureamt, car_price, "车损险投保金额和车辆价格不符")
-        self.assertEqual(mortvalue, car_price, "抵押品价值和车辆价格不符")
+                company_service_rate - commission_fee_rate) / 100) / 100)) * 100  # 取百
+        self.checkEqual(ture_sf_money, sf_money, "首付金额计算有误（首付金额=车辆价格-贷款金额合计）")
+        self.checkEqual(true_sf_proportion, sf_proportion, "首付比例计算有误（首付比例=首付金额/车辆价格*100%）")
+        self.checkEqual(ture_first_month_money, first_month_money, "首月还款计算有误（首月还款=（贷款金额合计+手续费总额）-月还款金额×（贷款期数-1））")
+        self.checkEqual(true_month_money, month_money, "月还款金额计算有误(月还款金额=贷款金额合计/贷款期数+手续费总额/贷款期数)")
+        self.checkEqual(true_poundage_amount, poundage_amount, "手续费总额计算有误(手续费总额=贷款金额合计×分期手续费率)")
+        self.checkEqual(true_loan_money, loan_money, "贷款金额合计计算有误(贷款金额合计 = 实际贷款额 + 实际贷款额×（总利率 - 分期手续费率）)")
+        # self.checkEqual(ture_contract_sf_ratio, contract_sf_ratio, "收入还贷比计算有误(收入还贷比=其他月还款额/还款人月均总收入)")
+        self.checkEqual(insureamt, car_price, "车损险投保金额和车辆价格不符")
+        self.checkEqual(mortvalue, car_price, "抵押品价值和车辆价格不符")
 
-    def test_Claim(self):  ##认领操作
-        element_click(find_elementbytext(self.browser, By.TAG_NAME, "a", "开卡分期列表"))
-        element_click(find_elementbytext(self.browser, By.TAG_NAME, "div", "待认领案件"))
+    def checkEqual(self, first, second, msg):
+        try:
+            self.assertEqual(first, second, msg=None)
+        except Exception as e:
+            print(msg)
+            catch_image(self.browser)
+            self.assertEqual(first, second, msg=None)
+            raise
+
+    def checkIsNotNone(self, obj, msg=None):
+        try:
+            self.assertIsNotNone(obj, msg=None)
+        except Exception as e:
+            print(msg)
+            catch_image(self.browser)
+            self.assertIsNotNone(obj, msg=None)
+            raise
+
+    def test_Claim(self, car_type):  ##认领操作
+        element_click(find_element_by_text(self.browser, By.TAG_NAME, "a", "开卡分期列表"))
+        element_click(find_element_by_text(self.browser, By.TAG_NAME, "div", "待认领案件"))
+        self.claim_input_car_type(car_type)
         find_elements(self.browser, By.CLASS_NAME, "el-table__row")  # 隐性等待，等待列表元素都展示出来
-        element_click(find_elementbytext(self.browser, By.TAG_NAME, "button", "认领"))
+        element_click(find_element_by_text(self.browser, By.TAG_NAME, "button", "认领"))
 
     def test_UnClaim(self):  ##退件操作
-        element_click(find_elementbytext(self.browser, By.TAG_NAME, "a", "开卡分期列表"))
-        element_click(find_elementbytext(self.browser, By.TAG_NAME, "div", "待处理案件"))
+        element_click(find_element_by_text(self.browser, By.TAG_NAME, "a", "开卡分期列表"))
+        element_click(find_element_by_text(self.browser, By.TAG_NAME, "div", "待处理案件"))
         find_elements(self.browser, By.CLASS_NAME, "el-table__row")  # 隐性等待，等待列表元素都展示出来
-        element_click(find_elementbytext(self.browser, By.TAG_NAME, "button", "退件"))
+        element_click(find_element_by_text(self.browser, By.TAG_NAME, "button", "退件"))
 
-    def test_Handle(self):  ##处理操作
-        element_click(find_elementbytext(self.browser, By.TAG_NAME, "a", "开卡分期列表"))
-        element_click(find_elementbytext(self.browser, By.TAG_NAME, "div", "待处理案件"))
+    def test_Handle(self, car_type):  ##处理操作
+        element_click(find_element_by_text(self.browser, By.TAG_NAME, "a", "开卡分期列表"))
+        element_click(find_element_by_text(self.browser, By.TAG_NAME, "div", "待处理案件"))
+        self.unclaim_input_car_type(car_type)
         find_elements(self.browser, By.CLASS_NAME, "el-table__row")  # 隐性等待，等待列表元素都展示出来
-        element_click(find_elementbytext(self.browser, By.TAG_NAME, "button", "处理"))
+        element_click(find_element_by_text(self.browser, By.TAG_NAME, "button", "处理"))
+
+    def claim_input_car_type(self, car_type):
+        claim_select_div = find_elements(self.browser, By.CLASS_NAME, "comp-form-item-fields")[0]
+        select_labels = find_elements_by_element(claim_select_div, By.TAG_NAME, "label")
+        for select_label in select_labels:
+            if select_label.text == "业务品种":
+                input_element = find_next_input_by_element(select_label)
+                element_click(input_element)
+                self.click_selcet_li_by_text(car_type)
+                self.n = 1
+        search_button = find_element_by_element(claim_select_div, By.TAG_NAME, "button")
+        element_click(search_button)
+
+    def unclaim_input_car_type(self, car_type):
+        print(car_type)
+        claim_select_div = find_elements(self.browser, By.CLASS_NAME, "comp-form-item-fields")[1]
+        select_labels = find_elements_by_element(claim_select_div, By.TAG_NAME, "label")
+        for select_label in select_labels:
+            if select_label.text == "业务品种":
+                input_element = find_next_input_by_element(select_label)
+                element_click(input_element)
+                element_click(find_element_by_text(self.browser, By.TAG_NAME, "li", car_type))
+        search_button = find_element_by_element(claim_select_div, By.TAG_NAME, "button")
+        element_click(search_button)
 
     def storage(self):
-
-        element_click(find_elementbytext(self.browser, By.TAG_NAME, "button", "暂存"))
+        element_click(find_element_by_text(self.browser, By.TAG_NAME, "button", "暂存"))
 
     def submit(self):
+        title_div = find_elements(self.browser, By.CLASS_NAME, "lcomp-module-pane")[0]
+        title_element = find_element_by_text_element(title_div, By.TAG_NAME, "span", "业务品种")
+        car_type = find_next_element(title_element).text
+        if car_type == "新车":
+            submit_div = find_element(self.browser, By.CLASS_NAME, "fixed-btn-inner")
+            element_click(find_element_by_text_element(submit_div, By.TAG_NAME, "button", "提交"))
+            self.n = self.n + 1
+            element_div = find_element(self.browser, By.XPATH, "/html/body/div[" + str(self.n) + "]")
+            element_click(find_element_by_text_element(element_div, By.TAG_NAME, "button", "确定"))
+        elif car_type == "二手车":
+            submit_div = find_element(self.browser, By.CLASS_NAME, "fixed-btn-inner")
+            element_click(find_element_by_text_element(submit_div, By.TAG_NAME, "button", "提交"))
+            self.n = self.n + 1
+            element_div = find_element(self.browser, By.XPATH, "/html/body/div[" + str(self.n) + "]")
+            element_click(find_element_by_text_element(element_div, By.TAG_NAME, "button", "确定"))
 
-        element_click(find_elementbytext(self.browser, By.TAG_NAME, "button", "提交"))
+            element_div = find_element(self.browser, By.XPATH, "/html/body/div[" + str(self.n) + "]")
+            element_click(find_element_by_text_element(element_div, By.TAG_NAME, "button", "确定"))
 
     def test_CardSuccess(self):
-        self.test_Handle()
-        # self.card()
+        '''开卡分期测试'''
+        car_type = "二手车"
+        self.test_Handle(car_type)
+        self.card()
         self.stage()
         # self.storage()
-        # self.submit()
+        self.submit()
 
     def tearDown(self):
-        print("开卡测试结束")
+        print("开卡_分期测试结束")
