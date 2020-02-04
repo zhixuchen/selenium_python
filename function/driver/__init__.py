@@ -18,7 +18,7 @@ class Driver():
         self.chrome_browser.quit()
 
 def upload_image( file_dir, file_name):
-    time.sleep(0.2)
+    time.sleep(0.5)
     up_load_path=root_path+"selenium_python\\function\\driver\\upimage.exe"
     file_path = file_dir + file_name+'.png'
     os.system('%s  %s' % (up_load_path, file_path))  # 调用AutoIt进行上传操作

@@ -51,6 +51,7 @@ def element_click(element):
 
 
 def element_click_script(browser, element):
+    time.sleep(0.5)
     browser.execute_script("arguments[0].click()", element)
 
 
@@ -70,10 +71,13 @@ def find_element_by_text(browser, by, string, text):
 
 
 def find_element_by_text_element(element, by, string, text):
+    time.sleep(0.5)
     elements = find_elements_by_element(element, by, string)
     for element in elements:
         if text == element.text:
             return element
+
+
 
 '''重写查找element,隐性等待10秒'''
 
@@ -111,6 +115,13 @@ def find_next_element(element):
     next_element=find_element_by_element(element,By.XPATH,"./following::*")
     return next_element
 
+'''知道前一个element，在后面第一个input中输入key'''
+def next_input_send_key(element,key):
+    element_send_key(find_next_input_by_element(element),key)
 
+'''知道element，根据element内的label的标题，对相应的input输入key'''
+def send_key_by_input_title(element,title,key):
+    title_element=find_element_by_text_element(element,By.TAG_NAME,"label",title)
+    next_input_send_key(title_element,key)
 
 

@@ -36,6 +36,8 @@ if __name__ == '__main__':
         print(a.get_userinfo().name)
         print(a.get_account("kk_account"))
         print(a.get_pwd("kk_pwd"))
+        print(a.get_account("cs_account"))
+        print(a.get_pwd("cs_pwd"))
         # print(a.getuserinfo().user.name)
     except Exception as e:
         print("")

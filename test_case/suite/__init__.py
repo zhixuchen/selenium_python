@@ -8,3 +8,5 @@ from test_case.case import card_stage_case
 from test_case.case import credit_case
 from test_case.case import login_case
 from test_case.case import *
+from test_case.case import company_examine_case
+from test_case.case import operation_examine_case

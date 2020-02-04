@@ -11,6 +11,7 @@ class Login_Case(unittest.TestCase):
     def setUp(self):
         self.driver = Driver()
         self.browser = self.driver.chrome_browser
+        self.log=Logs()
 
     def login(self):
         try:
@@ -78,7 +79,8 @@ class Login_Case(unittest.TestCase):
     #     self.assertEqual(nulltxtVerify, '请输入验证码')
 
     def tearDown(self):
-        print("登录测试结束")
+        self.log.log_info("登录测试结束")
+        time.sleep(10)
 
         self.driver.tearDown()
 

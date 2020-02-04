@@ -11,3 +11,4 @@ from function.element import *
 from report.image import *
 import unittest
 import math
+from  report.logs import *
