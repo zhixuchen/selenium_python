@@ -246,7 +246,7 @@ class Company_Examine(unittest.TestCase):
         '''分公司初审测试'''
         car_type = "新车"
         text="通过"
-
+        self.test_Claim(car_type)
         self.test_Handle(car_type)
         self.examine_text(text)
         # self.examine()
