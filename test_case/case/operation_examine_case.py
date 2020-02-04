@@ -227,13 +227,13 @@ class Operation_Examine(unittest.TestCase):
         title_element = find_element_by_text_element(title_div, By.TAG_NAME, "span", "业务品种")
         car_type = find_next_element(title_element).text
         if car_type == "新车":
-            submit_div = find_element(self.browser, By.CLASS_NAME, "fixed-btn-inner")
+            submit_div = find_element(self.browser, By.CLASS_NAME, "lcomp-form-btns")
             element_click(find_element_by_text_element(submit_div, By.TAG_NAME, "button", "提交"))
             self.n = self.n + 1
             element_div = find_element(self.browser, By.XPATH, "/html/body/div[" + str(self.n) + "]")
             element_click(find_element_by_text_element(element_div, By.TAG_NAME, "button", "确定"))
         elif car_type == "二手车":
-            submit_div = find_element(self.browser, By.CLASS_NAME, "fixed-btn-inner")
+            submit_div = find_element(self.browser, By.CLASS_NAME, "lcomp-form-btns")
             element_click(find_element_by_text_element(submit_div, By.TAG_NAME, "button", "提交"))
             self.n = self.n + 1
             element_div = find_element(self.browser, By.XPATH, "/html/body/div[" + str(self.n) + "]")
