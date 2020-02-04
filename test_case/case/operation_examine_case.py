@@ -244,9 +244,10 @@ class Operation_Examine(unittest.TestCase):
 
     def test_ExamineFirstSuccess(self):
         '''运营中心审核一审'''
-        car_type = "二手车"
+        car_type = "新车"
         examine="一审"
         text="通过"
+        self.test_Claim(car_type,examine)
         self.test_Handle(car_type,examine)
         self.examine_text(text,examine)
         # self.examine()
@@ -255,24 +256,26 @@ class Operation_Examine(unittest.TestCase):
         self.submit()
     def test_ExamineSecondSuccess(self):
         '''运营中心审核二审'''
-        car_type = "二手车"
+        car_type = "新车"
         examine="二审"
         text="通过"
+        self.test_Claim(car_type, examine)
         self.test_Handle(car_type,examine)
         self.examine_text(text,examine)
         self.submit()
 
     def test_ExamineThirdSuccess(self):
         '''运营中心审核三审'''
-        car_type = "二手车"
+        car_type = "新车"
         examine = "三审"
         text = "通过"
+        self.test_Claim(car_type, examine)
         self.test_Handle(car_type, examine)
         self.examine_text(text,examine)
         self.submit()
     def test_ExamineReject(self):
         '''运营中心审核拒件'''
-        car_type = "二手车"
+        car_type = "新车"
         text = "拒件"
         self.test_Handle(car_type)
         self.examine_text(text)
@@ -283,7 +286,7 @@ class Operation_Examine(unittest.TestCase):
 
     def test_ExaminePending(self):
         '''运营中心审核待补件'''
-        car_type = "二手车"
+        car_type = "新车"
         text = "待补件"
         self.test_Handle(car_type)
         self.examine_text(text)
