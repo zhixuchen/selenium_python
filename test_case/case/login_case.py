@@ -55,28 +55,25 @@ class Login_Case(unittest.TestCase):
         tip = find_element(self.browser, By.CLASS_NAME, "header-title").text
         self.assertEqual(tip, '林润云系统')
 
-    # def test_nulluser(self):
-    #     '''用户名为空'''
-    #
-    #     self.login('', '', '')
-    #     self.driver.switch_to.alert().accept()
-    #     nullusererror = self.driver.switch_to.alert().text
-    #     self.assertEqual(nullusererror, '请输入管理员账号')
+    def test_nulluser(self):
+        '''用户名为空-tang'''
 
-    # def test_nullpwd(self):
-    #     '''密码为空'''
-    #
-    #     self.login('13620180611', '', '')
-    #     self.driver.switch_to.alert().accept()
-    #     nullpassword = self.driver.switch_to.alert().text
-    #     self.assertEqual(nullpassword, '请输入管理员密码')
-    #
-    # def test_nulltxtVerify(self):
-    #     self.login('13620180611', 'Aa654321', '')
-    #
-    #     self.driver.switch_to.alert().accept()
-    #     nulltxtVerify = self.driver.switch_to.alert().text
-    #     self.assertEqual(nulltxtVerify, '请输入验证码')
+    def test_nullpwd(self):
+        '''密码为空-tang'''
+
+    def test_nulltxtVerify(self):
+        '''验证码为空-hu'''
+
+    def test_error_pwd(self):
+        '''密码错误-niu'''
+
+    def test_error_account(self):
+        '''用户名错误-ouyf'''
+
+    def test_error_Verify(self):
+        '''验证码错误-hu'''
+
+
 
     def tearDown(self):
         self.log.log_info("登录测试结束")

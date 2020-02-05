@@ -16,6 +16,8 @@ class Credit_Case(unittest.TestCase):
         self.driver = Driver()
         self.browser = self.driver.chrome_browser
         self.log = Logs()
+        self.login()
+        self.loginbypwd()
 
     def login(self):
         try:
@@ -39,7 +41,6 @@ class Credit_Case(unittest.TestCase):
             catch_image(self.browser)
 
     def image(self,image_elements):
-
         for i in range(0, len(image_elements)):
             self.assertEqual(image_elements[i].text, TestData.credit_image_titles[i])  # 检查上传的图片类型是否缺失
             images = find_element_by_element(find_next_element(image_elements[i]), By.CLASS_NAME, "image-pane")
@@ -121,8 +122,7 @@ class Credit_Case(unittest.TestCase):
 
     def test_CreditSuccess(self):
         '''征信进件测试'''
-        self.login()
-        self.loginbypwd()
+
         self.credit()
         self.test_CarType0()
         self.test_Bank_E()
