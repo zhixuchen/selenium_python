@@ -55,24 +55,44 @@ class Login_Case(unittest.TestCase):
         tip = find_element(self.browser, By.CLASS_NAME, "header-title").text
         self.assertEqual(tip, '林润云系统')
 
-    def test_nulluser(self):
-        '''用户名为空-tang'''
-
-    def test_nullpwd(self):
-        '''密码为空-tang'''
+    def test_loginnullcode(self):
+        try:
+            data = Data()
+            account = data.get_account("xs_account")
+            find_elements(self.browser, By.CLASS_NAME, "el-input__inner")[0].send_keys(account)
+            find_elements(self.browser, By.TAG_NAME, "button")[1].click()
+            find_elements(self.browser, By.TAG_NAME, "button")[1].click()
+        except Exception as  e:
+            print(e)
+            catch_image(self.browser)
 
     def test_nulltxtVerify(self):
         '''验证码为空-huyx'''
+        self.login()
+        self.test_loginnullcode()
+        tip = find_element(self.browser, By.XPATH, "//*[@id='app']/div/div/div[2]/div/form/div/div[2]/div/div[2]").text
+        self.assertEqual(tip, '请输入验证码')
 
-    def test_error_pwd(self):
-        '''密码错误-niu'''
-
-    def test_error_account(self):
-        '''用户名错误-ouyf'''
+    def test_loginerrorcode(self):
+        try:
+            data = Data()
+            account = data.get_account("xs_account")
+            sms_code = "666666"
+            find_elements(self.browser, By.CLASS_NAME, "el-input__inner")[0].send_keys(account)
+            find_elements(self.browser, By.TAG_NAME, "button")[1].click()
+            find_elements(self.browser, By.CLASS_NAME, "el-input__inner")[1].send_keys(sms_code)
+            find_elements(self.browser, By.TAG_NAME, "button")[1].click()
+            time.sleep(1)
+        except Exception as  e:
+            print(e)
+            catch_image(self.browser)
 
     def test_error_Verify(self):
         '''验证码错误-huyx'''
-
+        self.login()
+        self.test_loginerrorcode()
+        tip = find_element(self.browser, By.XPATH, "/html/body/div[2]/div/div[1]").text
+        self.assertEqual(tip, '请输入正确的验证码')
 
 
     def tearDown(self):
