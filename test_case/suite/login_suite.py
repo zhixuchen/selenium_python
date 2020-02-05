@@ -8,7 +8,7 @@ from test_case.suite import *
 def suite():
     suite = unittest.TestSuite()
     suite.addTest(login_case.Login_Case('test_loginsSuccess'))
-    # suite.addTest(Login_Case('test_loginfail'))
+    suite.addTest(login_case.Login_Case('test_loginfail'))
     # suite.addTest(Login_Case('test_loginusernamefail'))
     # suite.addTest(Login_Case('test_nulluser'))
     # suite.addTest(Login_Case('test_nullpwd'))
