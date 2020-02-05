@@ -68,7 +68,7 @@ class Login_Case(unittest.TestCase):
         find_elements(self.browser, By.CLASS_NAME, "el-input__inner")[0].send_keys(account)
         # find_elements(self.browser, By.CLASS_NAME, "el-input__inner")[1].send_keys(pwd)
         find_elements(self.browser, By.TAG_NAME, "button")[0].click()
-        time.sleep(1)
+        time.sleep(1) # 提示不是瞬间弹出,需要时间响应,可用wait方法
         tip = find_element(self.browser, By.XPATH, r"//*[@id='app']/div/div/div[2]/div/form/div/div[1]/div/div[2]").text
         self.assertEqual(tip, '请输入手机号码')
 
@@ -81,7 +81,7 @@ class Login_Case(unittest.TestCase):
         find_elements(self.browser, By.CLASS_NAME, "el-input__inner")[0].send_keys(account)
         # find_elements(self.browser, By.CLASS_NAME, "el-input__inner")[1].send_keys(pwd)
         find_elements(self.browser, By.TAG_NAME, "button")[0].click()
-        time.sleep(1)
+        time.sleep(1) # 提示不是瞬间弹出,需要时间响应,可用wait方法
         tip = find_element(self.browser, By.XPATH, r"//*[@id='app']/div/div/div[2]/div/form/div/div[2]/div/div[2]").text
         self.assertEqual(tip, '密码不能为空')
 
