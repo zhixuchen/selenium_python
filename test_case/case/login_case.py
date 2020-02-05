@@ -62,7 +62,7 @@ class Login_Case(unittest.TestCase):
         '''密码为空-tang'''
 
     def test_nulltxtVerify(self):
-        '''验证码为空-hu'''
+        '''验证码为空-huyx'''
 
     def test_error_pwd(self):
         '''密码错误-niu'''
@@ -71,7 +71,7 @@ class Login_Case(unittest.TestCase):
         '''用户名错误-ouyf'''
 
     def test_error_Verify(self):
-        '''验证码错误-hu'''
+        '''验证码错误-huyx'''
 
 
 
