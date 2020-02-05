@@ -6,6 +6,6 @@
 import os
 
 if __name__ == '__main__':
-    print(os.system('%s' % ("pip freeze > requirements.txt")))
+    # print(os.system('%s' % ("pip freeze > requirements.txt")))
 
     print(os.system('%s' % ("pip install -r requirements.txt")))
