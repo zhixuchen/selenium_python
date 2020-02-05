@@ -7,6 +7,6 @@
 
 if __name__ == '__main__':
     try:
-        print("")
+        print("122312")
     except Exception as e:
         print("")
