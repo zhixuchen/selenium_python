@@ -66,7 +66,6 @@ class Login_Case(unittest.TestCase):
 
     def test_error_pwd(self):
         '''密码错误-niu'''
-        1
 
     def test_error_account(self):
         '''用户名错误-ouyf'''
