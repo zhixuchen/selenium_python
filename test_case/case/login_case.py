@@ -49,6 +49,8 @@ class Login_Case(unittest.TestCase):
 
     def test_loginsSuccess(self):
         '''登录成功'''
+    def test_error_account(self):
+        '''用户名不存在-ouyf'''
         self.login()
         self.test_loginbypwd()
         tip = find_element(self.browser, By.CLASS_NAME, "header-title").text
@@ -64,6 +66,8 @@ class Login_Case(unittest.TestCase):
         error_tip = find_element(self.browser, By.CLASS_NAME,"el-form-item__error").text
         print("error_tip:"+error_tip)
         self.assertEqual(error_tip, '请输入手机号码')
+        tip = find_element(self.browser, By.CLASS_NAME, "login-form-title").text
+        self.assertEqual(tip, '欢迎登录林润云收单系统')
 
     def test_nullpwd(self):
         '''密码为空-tang'''
