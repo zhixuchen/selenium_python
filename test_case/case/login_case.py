@@ -70,8 +70,9 @@ class Login_Case(unittest.TestCase):
         '''验证码为空-huyx'''
         self.login()
         self.test_loginnullcode()
-        tip = find_element(self.browser, By.XPATH, "//*[@id='app']/div/div/div[2]/div/form/div/div[2]/div/div[2]").text
-        self.assertEqual(tip, '请输入验证码')
+        hint = find_element(self.browser, By.CLASS_NAME, "el-form-item__error").text
+        # hint = find_element(self.browser, By.XPATH, "//*[@id='app']/div/div/div[2]/div/form/div/div[2]/div/div[2]").text
+        self.assertEqual(hint, '请输入验证码')
 
     def test_loginerrorcode(self):
         try:
@@ -91,13 +92,14 @@ class Login_Case(unittest.TestCase):
         '''验证码错误-huyx'''
         self.login()
         self.test_loginerrorcode()
-        tip = find_element(self.browser, By.XPATH, "/html/body/div[2]/div/div[1]").text
-        self.assertEqual(tip, '请输入正确的验证码')
+        system = find_element(self.browser, By.CLASS_NAME, "el-notification__content").text
+        # system = find_element(self.browser, By.XPATH, "/html/body/div[2]/div/div[1]").text
+        self.assertEqual(system, '请输入正确的验证码')
 
 
     def tearDown(self):
         self.log.log_info("登录测试结束")
-        time.sleep(10)
+        time.sleep(3)
 
         self.driver.tearDown()
 
