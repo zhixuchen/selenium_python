@@ -19,19 +19,17 @@ class Login_Case(unittest.TestCase):
             url = self.data.url
             self.browser.get(url)
         except Exception as e:
-            print(e)
+            self.log.log_error(e)
             catch_image(self.browser)
 
-    def test_loginbypwd(self): # 密码登录
+    def test_loginbypwd(self,account): # 密码登录
         try:
-
-            account = self.data.get_account("xs_account")
             pwd = self.data.get_pwd("xs_pwd")
             find_elements(self.browser, By.CLASS_NAME, "el-input__inner")[0].send_keys(account)
             find_elements(self.browser, By.CLASS_NAME, "el-input__inner")[1].send_keys(pwd)
             find_elements(self.browser, By.TAG_NAME, "button")[0].click()
         except Exception as e:
-            print(e)
+            self.log.log_error(e)
             catch_image(self.browser)
 
     def test_loginbysms(self): # 验证码登录
@@ -44,17 +42,24 @@ class Login_Case(unittest.TestCase):
             find_elements(self.browser, By.CLASS_NAME, "el-input__inner")[1].send_keys(sms_code) # 验证码输入框
             find_elements(self.browser, By.TAG_NAME, "button")[1].click() # 登录
         except Exception as  e:
-            print(e)
+            self.log.log_error(e)
             catch_image(self.browser)
 
     def test_loginsSuccess(self):
         '''登录成功'''
-    def test_error_account(self):
-        '''用户名不存在-ouyf'''
+        account = self.data.get_account("xs_account")
         self.login()
-        self.test_loginbypwd()
+        self.test_loginbypwd(account)
         tip = find_element(self.browser, By.CLASS_NAME, "header-title").text
         self.assertEqual(tip, '林润云系统')
+    def test_error_account(self):
+        '''用户名不存在-ouyf'''
+        account = self.data.get_account("error_account")
+        self.login()
+        self.test_loginbypwd(account)
+        time.sleep(1)
+        error_tip = find_element(self.browser, By.CLASS_NAME, "el-notification__content").text
+        self.assertEqual(error_tip, '用户不存在')
 
     def test_nulluser(self):
         '''用户名为空-tang'''
