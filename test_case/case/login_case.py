@@ -42,14 +42,23 @@ class Login_Case(unittest.TestCase):
             self.log.log_error(e)
             catch_image(self.browser)
 
-    def test_loginsSuccess(self):
-        '''登录成功'''
+    def test_loginsSuccessbypwd(self):
+        '''登录成功通过密码'''
         account = self.data.get_account("xs_account")
         pwd = self.data.get_pwd("xs_pwd")
         self.login()
         self.loginbypwd(account, pwd)
         tip = find_element(self.browser, By.CLASS_NAME, "header-title").text
         self.assertEqual(tip, '林润云系统')
+    def test_loginsSuccessbysms_code(self):
+        '''登录成功通过验证码'''
+        account = self.data.get_account("xs_account")
+        sms_code = self.data.sms_code
+        self.login()
+        self.loginbysms(account, sms_code)
+        tip = find_element(self.browser, By.CLASS_NAME, "header-title").text
+        self.assertEqual(tip, '林润云系统')
+
 
     def test_error_account(self):
         '''用户名不存在-ouyf'''
@@ -60,8 +69,17 @@ class Login_Case(unittest.TestCase):
         error_tip = find_element(self.browser, By.CLASS_NAME, "el-notification__content").text
         self.assertEqual(error_tip, '用户不存在')
 
+
     def test_error_pwd(self):
         '''密码错误-niu'''
+        account=self.data.get_account("xs_account")
+        pwd="666666"
+        self.login()
+        self.loginbypwd(account,pwd)
+        error_tip1 = find_element(self.browser, By.CLASS_NAME, "el-form-item__error").text
+        self.assertEqual(error_tip1, '密码错误')
+        error_tip2 = find_element(self.browser, By.CLASS_NAME, "el-notification__content").text
+        self.assertEqual(error_tip2, '账号或密码输入错误，或账户被禁用，请联系管理员')
 
     def test_nulluser(self):
         '''用户名为空-tang'''
