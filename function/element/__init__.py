@@ -71,7 +71,6 @@ def find_element_by_text(browser, by, string, text):
 
 
 def find_element_by_text_element(element, by, string, text):
-    time.sleep(0.5)
     elements = find_elements_by_element(element, by, string)
     for element in elements:
         if text == element.text:
@@ -83,8 +82,8 @@ def find_element_by_text_element(element, by, string, text):
 
 
 def find_element(browser, by, string):
-    WebDriverWait(browser, 10).until(EC.presence_of_element_located((by, string)))
-    element = browser.find_element(by, string)
+    WebDriverWait(browser, 10,0.5).until(EC.presence_of_element_located((by, string)))
+    element = browser.find_elements(by, string)[0]
     return element
 
 
@@ -92,10 +91,9 @@ def find_element(browser, by, string):
 
 
 def find_elements(browser, by, string):
-    time.sleep(0.5)
-    WebDriverWait(browser, 10).until(EC.presence_of_element_located((by, string)))
-    element = browser.find_elements(by, string)
-    return element
+    WebDriverWait(browser, 10,0.5).until(EC.presence_of_element_located((by, string)))
+    elements = browser.find_elements(by, string)
+    return elements
 
 '''知道当前element，查找同级别的input'''
 def find_next_input_by_element(element):

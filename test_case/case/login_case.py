@@ -12,11 +12,12 @@ class Login_Case(unittest.TestCase):
         self.driver = Driver()
         self.browser = self.driver.chrome_browser
         self.log=Logs()
+        self.data = Data()
 
     def login(self):
         try:
-            data = Data()
-            url = data.url
+
+            url = self.data.url
             self.browser.get(url)
         except Exception as e:
             print(e)
@@ -24,9 +25,9 @@ class Login_Case(unittest.TestCase):
 
     def test_loginbypwd(self):
         try:
-            data = Data()
-            account = data.get_account("xs_account")
-            pwd = data.get_pwd("xs_pwd")
+
+            account = self.data.get_account("xs_account")
+            pwd = self.data.get_pwd("xs_pwd")
             find_elements(self.browser, By.CLASS_NAME, "el-input__inner")[0].send_keys(account)
             find_elements(self.browser, By.CLASS_NAME, "el-input__inner")[1].send_keys(pwd)
             find_elements(self.browser, By.TAG_NAME, "button")[0].click()
@@ -36,9 +37,9 @@ class Login_Case(unittest.TestCase):
 
     def test_loginbysms(self):
         try:
-            data = Data()
-            account = data.get_account("xs_account")
-            sms_code = data.sms_code
+
+            account = self.data.get_account("xs_account")
+            sms_code = self.data.sms_code
             find_elements(self.browser, By.CLASS_NAME, "el-input__inner")[0].send_keys(account)
             find_elements(self.browser, By.TAG_NAME, "button")[1].click()
             find_elements(self.browser, By.TAG_NAME, "button")[0].click()
