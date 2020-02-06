@@ -73,46 +73,49 @@ class Login_Case(unittest.TestCase):
         find_elements(self.browser, By.TAG_NAME, "button")[0].click()
         error_tip = find_element(self.browser, By.CLASS_NAME, "el-form-item__error").text
         self.assertEqual(error_tip, '密码不能为空')
+
     def test_loginnullcode(self):
         try:
-            data = Data()
-            account = data.get_account("xs_account")
+            account = self.data.get_account("xs_account")
             find_elements(self.browser, By.CLASS_NAME, "el-input__inner")[0].send_keys(account)
             find_elements(self.browser, By.TAG_NAME, "button")[1].click()
+            find_elements(self.browser, By.TAG_NAME, "button")[0].click()
             find_elements(self.browser, By.TAG_NAME, "button")[1].click()
         except Exception as  e:
-            print(e)
+            self.log.log_error(e)
             catch_image(self.browser)
 
     def test_nulltxtVerify(self):
         '''验证码为空-huyx'''
         self.login()
         self.test_loginnullcode()
-        hint = find_element(self.browser, By.CLASS_NAME, "el-form-item__error").text
+        time.sleep(1)
+        error_tip = find_element(self.browser, By.CLASS_NAME, "el-form-item__error").text
         # hint = find_element(self.browser, By.XPATH, "//*[@id='app']/div/div/div[2]/div/form/div/div[2]/div/div[2]").text
-        self.assertEqual(hint, '请输入验证码')
+        self.assertEqual(error_tip, '请输入验证码')
 
     def test_loginerrorcode(self):
         try:
-            data = Data()
-            account = data.get_account("xs_account")
+
+            account = self.data.get_account("xs_account")
             sms_code = "666666"
             find_elements(self.browser, By.CLASS_NAME, "el-input__inner")[0].send_keys(account)
             find_elements(self.browser, By.TAG_NAME, "button")[1].click()
+            find_elements(self.browser, By.TAG_NAME, "button")[0].click()
             find_elements(self.browser, By.CLASS_NAME, "el-input__inner")[1].send_keys(sms_code)
             find_elements(self.browser, By.TAG_NAME, "button")[1].click()
-            time.sleep(1)
+
         except Exception as  e:
-            print(e)
+            self.log.log_error(e)
             catch_image(self.browser)
 
     def test_error_Verify(self):
         '''验证码错误-huyx'''
         self.login()
         self.test_loginerrorcode()
-        system = find_element(self.browser, By.CLASS_NAME, "el-notification__content").text
-        # system = find_element(self.browser, By.XPATH, "/html/body/div[2]/div/div[1]").text
-        self.assertEqual(system, '请输入正确的验证码')
+        time.sleep(1)
+        error_tip = find_element(self.browser, By.CLASS_NAME, "el-notification__content").text
+        self.assertEqual(error_tip, '请输入正确的验证码')
 
 
     def tearDown(self):
