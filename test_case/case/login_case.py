@@ -12,21 +12,21 @@ class Login_Case(unittest.TestCase):
         self.driver = Driver()
         self.browser = self.driver.chrome_browser
         self.log=Logs()
+        self.data = Data()
 
     def login(self):
         try:
-            data = Data()
-            url = data.url
+            url = self.data.url
             self.browser.get(url)
         except Exception as e:
             print(e)
             catch_image(self.browser)
 
-    def test_loginbypwd(self):
+    def test_loginbypwd(self): # 密码登录
         try:
-            data = Data()
-            account = data.get_account("xs_account")
-            pwd = data.get_pwd("xs_pwd")
+
+            account = self.data.get_account("xs_account")
+            pwd = self.data.get_pwd("xs_pwd")
             find_elements(self.browser, By.CLASS_NAME, "el-input__inner")[0].send_keys(account)
             find_elements(self.browser, By.CLASS_NAME, "el-input__inner")[1].send_keys(pwd)
             find_elements(self.browser, By.TAG_NAME, "button")[0].click()
@@ -34,16 +34,15 @@ class Login_Case(unittest.TestCase):
             print(e)
             catch_image(self.browser)
 
-    def test_loginbysms(self):
+    def test_loginbysms(self): # 验证码登录
         try:
-            data = Data()
-            account = data.get_account("xs_account")
-            sms_code = data.sms_code
-            find_elements(self.browser, By.CLASS_NAME, "el-input__inner")[0].send_keys(account)
-            find_elements(self.browser, By.TAG_NAME, "button")[1].click()
-            find_elements(self.browser, By.TAG_NAME, "button")[0].click()
-            find_elements(self.browser, By.CLASS_NAME, "el-input__inner")[1].send_keys(sms_code)
-            find_elements(self.browser, By.TAG_NAME, "button")[1].click()
+            account = self.data.get_account("xs_account")
+            sms_code = self.data.sms_code
+            find_elements(self.browser, By.CLASS_NAME, "el-input__inner")[0].send_keys(account) #账号输入框
+            find_elements(self.browser, By.TAG_NAME, "button")[1].click() # 登陆下方,登录方式切换按钮
+            find_elements(self.browser, By.TAG_NAME, "button")[0].click() # 获取验证码按钮
+            find_elements(self.browser, By.CLASS_NAME, "el-input__inner")[1].send_keys(sms_code) # 验证码输入框
+            find_elements(self.browser, By.TAG_NAME, "button")[1].click() # 登录
         except Exception as  e:
             print(e)
             catch_image(self.browser)
@@ -55,6 +54,25 @@ class Login_Case(unittest.TestCase):
         tip = find_element(self.browser, By.CLASS_NAME, "header-title").text
         self.assertEqual(tip, '林润云系统')
 
+    def test_nulluser(self):
+        '''用户名为空-tang'''
+        self.login()
+        pwd = self.data.get_pwd("xs_pwd")
+        find_elements(self.browser, By.CLASS_NAME, "el-input__inner")[1].send_keys(pwd)
+        find_elements(self.browser, By.TAG_NAME, "button")[0].click()
+        time.sleep(1)
+        error_tip = find_element(self.browser, By.CLASS_NAME,"el-form-item__error").text
+        print("error_tip:"+error_tip)
+        self.assertEqual(error_tip, '请输入手机号码')
+
+    def test_nullpwd(self):
+        '''密码为空-tang'''
+        self.login()
+        account = self.data.get_account("xs_account")
+        find_elements(self.browser, By.CLASS_NAME, "el-input__inner")[0].send_keys(account)
+        find_elements(self.browser, By.TAG_NAME, "button")[0].click()
+        error_tip = find_element(self.browser, By.CLASS_NAME, "el-form-item__error").text
+        self.assertEqual(error_tip, '密码不能为空')
     def test_loginnullcode(self):
         try:
             data = Data()

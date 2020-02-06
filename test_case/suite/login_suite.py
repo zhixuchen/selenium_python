@@ -8,6 +8,9 @@ from test_case.suite import *
 def suite():
     suite = unittest.TestSuite()
     # suite.addTest(login_case.Login_Case('test_loginsSuccess'))
+    suite.addTest(login_case.Login_Case('test_nulluser'))
+    # suite.addTest(login_case.Login_Case('test_nullpwd'))
+    # suite.addTest(login_case.Login_Case('test_loginsSuccess'))
     suite.addTest(login_case.Login_Case('test_nulltxtVerify'))
     # suite.addTest(login_case.Login_Case('test_error_Verify'))
     # suite.addTest(login_case.Login_Case('test_loginfail'))

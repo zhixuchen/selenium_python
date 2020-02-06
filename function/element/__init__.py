@@ -83,8 +83,9 @@ def find_element_by_text_element(element, by, string, text):
 
 
 def find_element(browser, by, string):
-    WebDriverWait(browser, 10).until(EC.presence_of_element_located((by, string)))
-    element = browser.find_element(by, string)
+
+    WebDriverWait(browser, 10, 0.5).until(EC.presence_of_element_located((by, string)))
+    element = browser.find_elements(by, string)[0]
     return element
 
 
@@ -92,8 +93,7 @@ def find_element(browser, by, string):
 
 
 def find_elements(browser, by, string):
-    time.sleep(0.5)
-    WebDriverWait(browser, 10).until(EC.presence_of_element_located((by, string)))
+    WebDriverWait(browser, 10,0.5).until(EC.presence_of_element_located((by, string)))
     element = browser.find_elements(by, string)
     return element
 
