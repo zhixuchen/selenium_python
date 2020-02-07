@@ -237,7 +237,7 @@ class Card_Case(unittest.TestCase):
         title_element = find_element_by_text_element(title_div, By.TAG_NAME, "span", "业务品种")
         car_type = find_next_element(title_element).text
         if check in ["手机号码", "身份证号", "姓名", "证件有效期", "车辆价格"]:
-            self.assertIsNotNone(defult)
+            self.checkIsNotNone(defult)
         else:
             if "领卡地区号" == check:
                 error_msg = "领卡地区号错误"
@@ -275,7 +275,7 @@ class Card_Case(unittest.TestCase):
                     check_value = "80"
                 elif car_type == "二手车":
                     check_value = "70"
-            self.assertEqual(check_value, defult, error_msg)
+            self.check_Equal(check_value, defult, error_msg)
 
     def check_select_list(self, check_list, select_div): ##检验下拉框内的值是否显示完整
         for check in check_list:
@@ -314,7 +314,7 @@ class Card_Case(unittest.TestCase):
             elif "收款对象类型" == check:
                 true_list = ["第三方机构", "合作单位"]
             for i in range(0, len(true_list)):
-                self.assertEqual(true_list[i], lis[i].get_attribute("textContent"), check + "列表校验失败")
+                self.check_Equal(true_list[i], lis[i].get_attribute("textContent"), check + "列表校验失败")
 
     def check_finance(self, finance_data): ##检验打款信息
         car_price = float(finance_data["car_price"])  # 车辆价格
@@ -342,15 +342,29 @@ class Card_Case(unittest.TestCase):
         true_poundage_amount = round((loan_money * commission_fee_rate) / 100)
         true_loan_money = int(math.ceil((contract_loan_money + contract_loan_money * (
                 company_service_rate - commission_fee_rate) / 100) / 100)) * 100  # 取百
-        self.assertEqual(ture_sf_money, sf_money, "首付金额计算有误（首付金额=车辆价格-贷款金额合计）")
-        self.assertEqual(true_sf_proportion, sf_proportion, "首付比例计算有误（首付比例=首付金额/车辆价格*100%）")
-        self.assertEqual(ture_first_month_money, first_month_money, "首月还款计算有误（首月还款=（贷款金额合计+手续费总额）-月还款金额×（贷款期数-1））")
-        self.assertEqual(true_month_money, month_money, "月还款金额计算有误(月还款金额=贷款金额合计/贷款期数+手续费总额/贷款期数)")
-        self.assertEqual(true_poundage_amount, poundage_amount, "手续费总额计算有误(手续费总额=贷款金额合计×分期手续费率)")
-        self.assertEqual(true_loan_money, loan_money, "贷款金额合计计算有误(贷款金额合计 = 实际贷款额 + 实际贷款额×（总利率 - 分期手续费率）)")
-        self.assertEqual(ture_contract_sf_ratio, contract_sf_ratio, "收入还贷比计算有误(收入还贷比=其他月还款额/还款人月均总收入)")
-        self.assertEqual(insureamt, car_price, "车损险投保金额和车辆价格不符")
-        self.assertEqual(mortvalue, car_price, "抵押品价值和车辆价格不符")
+        self.check_Equal(ture_sf_money, sf_money, "首付金额计算有误（首付金额=车辆价格-贷款金额合计）")
+        self.check_Equal(true_sf_proportion, sf_proportion, "首付比例计算有误（首付比例=首付金额/车辆价格*100%）")
+        self.check_Equal(ture_first_month_money, first_month_money, "首月还款计算有误（首月还款=（贷款金额合计+手续费总额）-月还款金额×（贷款期数-1））")
+        self.check_Equal(true_month_money, month_money, "月还款金额计算有误(月还款金额=贷款金额合计/贷款期数+手续费总额/贷款期数)")
+        self.check_Equal(true_poundage_amount, poundage_amount, "手续费总额计算有误(手续费总额=贷款金额合计×分期手续费率)")
+        self.check_Equal(true_loan_money, loan_money, "贷款金额合计计算有误(贷款金额合计 = 实际贷款额 + 实际贷款额×（总利率 - 分期手续费率）)")
+        self.check_Equal(ture_contract_sf_ratio, contract_sf_ratio, "收入还贷比计算有误(收入还贷比=其他月还款额/还款人月均总收入)")
+        self.check_Equal(insureamt, car_price, "车损险投保金额和车辆价格不符")
+        self.check_Equal(mortvalue, car_price, "抵押品价值和车辆价格不符")
+
+    def check_Equal(self, first, second, msg=None):
+        try:
+            self.assertEqual(first, second, msg=None)
+        except AssertionError:
+            catch_image(self.browser)
+            raise
+
+    def checkIsNotNone(self,obj,msg=None):
+        try:
+            self.assertIsNotNone(obj,msg=None)
+        except AssertionError:
+            catch_image(self.browser)
+            raise
 
     def Claim(self, car_type):  ##认领操作
         element = find_element(self.browser, By.LINK_TEXT, "开卡分期/承保申请")
