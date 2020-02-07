@@ -9,6 +9,7 @@ from test_case.suite import *
 
 def suite():
     suite = unittest.TestSuite()
-    suite.addTest(credit_case.Credit_Case('test_CreditSuccess'))
+    suite.addTest(credit_case.Credit_Case('test_E_X_Credit'))
+    suite.addTest(credit_case.Credit_Case('test_E_E_Credit'))
 
     return suite

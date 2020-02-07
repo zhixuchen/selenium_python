@@ -72,6 +72,7 @@ def find_element_by_text(browser, by, string, text):
 
 def find_element_by_text_element(element, by, string, text):
     elements = find_elements_by_element(element, by, string)
+
     for element in elements:
         if text == element.text:
             return element
@@ -82,7 +83,7 @@ def find_element_by_text_element(element, by, string, text):
 
 
 def find_element(browser, by, string):
-    element =WebDriverWait(browser, 10, 0.5).until(EC.visibility_of_element_located((by, string)))
+    element =WebDriverWait(browser, 10, 0.1).until(EC.visibility_of_element_located((by, string)))
     return element
 
 
@@ -90,7 +91,7 @@ def find_element(browser, by, string):
 
 
 def find_elements(browser, by, string):
-    WebDriverWait(browser, 10, 0.5).until(EC.visibility_of_element_located((by, string)))
+    WebDriverWait(browser, 10, 0.5).until(EC.presence_of_element_located((by, string)))
     element = browser.find_elements(by, string)
     return element
 

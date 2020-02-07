@@ -63,8 +63,6 @@ class Credit_Case(unittest.TestCase):
             elif "签发机关" == title:
                 key = self.data.get_userinfo().name + "的发证机关"
             send_key_by_input_title(div_fields, title, key)
-        element_send_key(find_elements(self.browser, By.CLASS_NAME, "el-range-input")[0], "2018-01-01")
-        element_send_key(find_elements(self.browser, By.CLASS_NAME, "el-range-input")[1], "2030-01-01")
 
     def credit_add_others(self):
         for a in range(1, 4):
@@ -127,7 +125,7 @@ class Credit_Case(unittest.TestCase):
         select_element = find_element_by_text_element(element_div, By.TAG_NAME, "li", text)
         element_click(select_element)
 
-    def test_CarTyp(self, cartype):
+    def select_CarTyp(self, cartype):
 
         div_fields = find_element(self.browser, By.CLASS_NAME, "comp-form-item-fields")
         fields_elements = find_elements_by_element(div_fields, By.TAG_NAME, "label")
@@ -139,7 +137,7 @@ class Credit_Case(unittest.TestCase):
                 break
         self.click_selcet_li_by_text(cartype)
 
-    def test_Bank(self, bankname):
+    def select_Bank(self, bankname):
         div_fields = find_element(self.browser, By.CLASS_NAME, "comp-form-item-fields")
         fields_elements = find_elements_by_element(div_fields, By.TAG_NAME, "label")
         for i in range(0, len(fields_elements)):
@@ -149,6 +147,12 @@ class Credit_Case(unittest.TestCase):
                     find_next_input_by_element(fields_elements[i]))
                 break
         self.click_selcet_li_by_text(bankname)
+
+    def select_time(self):
+        element_send_key(find_elements(self.browser, By.CLASS_NAME, "el-range-input")[0], "2018-01-01")
+        element_send_key(find_elements(self.browser, By.CLASS_NAME, "el-range-input")[1], "2030-01-01")
+
+
     def submit(self):
         buttons = find_elements(self.browser, By.TAG_NAME, "button")
         for i in range(0, len(buttons)):
@@ -159,21 +163,32 @@ class Credit_Case(unittest.TestCase):
         for i in range(0, len(buttons)):
             if "确定" == buttons[i].text:
                 element_click(buttons[i])
+        success_tip = find_element(self.browser, By.CLASS_NAME, "el-message__content").text
 
+        self.assertEqual(success_tip, '提交成功')
 
     def test_E_X_Credit(self):
         '''E分期银行新车-ouy'''
         cartype = "新车"
         bankname = "济南市胜利街支行"
         self.credit()
-        self.test_CarTyp(cartype)
-        self.test_Bank(bankname)
-        self.credit_add_others()
+        self.select_CarTyp(cartype)
+        self.select_Bank(bankname)
+        self.select_time()
+        # self.credit_add_others()
         self.submit()
 
     def test_E_E_Credit(self):
         '''E分期银行二手车-niu'''
+        cartype = "二手车"
+        bankname = "济南市胜利街支行"
+        self.credit()
+        self.select_CarTyp(cartype)
+        self.select_Bank(bankname)
+        self.select_time()
+        # self.credit_add_others()
+        self.submit()
     def tearDown(self):
         self.log.log_info("测试结束")
-        time.sleep(10)
+        time.sleep(3)
         self.driver.tearDown()
