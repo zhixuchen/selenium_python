@@ -103,7 +103,7 @@ class Credit_Case(unittest.TestCase):
 
     def image(self, image_elements):
         for i in range(0, len(image_elements)):
-            self.assertEqual(image_elements[i].text, self.TestData.credit_image_titles[i])  # 检查上传的图片类型是否缺失
+            self.check_Equal(image_elements[i].text, self.TestData.credit_image_titles[i])  # 检查上传的图片类型是否缺失
             images = find_element_by_element(find_next_element(image_elements[i]), By.CLASS_NAME, "image-pane")
             element_click(images)
             upload_image(path, self.TestData.credit_image_titles[i])
@@ -154,7 +154,12 @@ class Credit_Case(unittest.TestCase):
     def select_time(self):
         element_send_key(find_elements(self.browser, By.CLASS_NAME, "el-range-input")[0], "2018-01-01")
         element_send_key(find_elements(self.browser, By.CLASS_NAME, "el-range-input")[1], "2030-01-01")
-
+    def check_Equal(self, first, second, msg=None):
+        try:
+            self.assertEqual(first, second, msg=None)
+        except AssertionError:
+            catch_image(self.browser)
+            raise
 
     def submit(self):
         buttons = find_elements(self.browser, By.TAG_NAME, "button")
@@ -168,7 +173,7 @@ class Credit_Case(unittest.TestCase):
                 element_click(buttons[i])
         success_tip = find_element(self.browser, By.CLASS_NAME, "el-message__content").text
 
-        self.assertEqual(success_tip, '提交成功')
+        self.check_Equal(success_tip, '提交成功')
 
     def test_E_X_Credit(self):
         '''E分期银行新车-ouy'''
