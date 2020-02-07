@@ -66,15 +66,18 @@ class Credit_Case(unittest.TestCase):
 
     def credit_add_others(self):
         for a in range(1, 4):
-            buttons = find_elements(self.browser, By.TAG_NAME, "button")
+            action_button_div=find_element(self.browser,By.CLASS_NAME,"action-btns")
+            buttons = find_elements_by_element(action_button_div, By.TAG_NAME, "button")
             if a == 3:
                 for i in range(0, len(buttons)):
                     if "新增担保人" == buttons[i].text:
                         element_click(buttons[i])
+                        break
             else:
                 for i in range(0, len(buttons)):
                     if "添加共同还款人" == buttons[i].text:
                         element_click(buttons[i])
+                        break
             element = find_element(self.browser, By.ID, "tab-" + str(a))
             element_click(element)
             div_images = find_elements(self.browser, By.CLASS_NAME, "image-field-row")
@@ -175,7 +178,7 @@ class Credit_Case(unittest.TestCase):
         self.select_CarTyp(cartype)
         self.select_Bank(bankname)
         self.select_time()
-        # self.credit_add_others()
+        self.credit_add_others()
         self.submit()
 
     def test_E_E_Credit(self):
@@ -186,7 +189,7 @@ class Credit_Case(unittest.TestCase):
         self.select_CarTyp(cartype)
         self.select_Bank(bankname)
         self.select_time()
-        # self.credit_add_others()
+        self.credit_add_others()
         self.submit()
     def tearDown(self):
         self.log.log_info("测试结束")
