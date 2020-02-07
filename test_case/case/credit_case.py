@@ -13,6 +13,7 @@ class Credit_Case(unittest.TestCase):
     def setUp(self):
         self.data = Data()
         self.TestData = Test_Data()
+        self.n=1
         self.driver = Driver()
         self.browser = self.driver.chrome_browser
         self.log = Logs()
@@ -21,7 +22,6 @@ class Credit_Case(unittest.TestCase):
 
     def login(self):
         try:
-
             url = self.data.url
             self.browser.get(url)
         except Exception as e:
@@ -30,7 +30,6 @@ class Credit_Case(unittest.TestCase):
 
     def loginbypwd(self):
         try:
-
             account = self.data.get_account("xs_account")
             pwd = self.data.get_pwd("xs_pwd")
             find_elements(self.browser, By.CLASS_NAME, "el-input__inner")[0].send_keys(account)
@@ -64,7 +63,8 @@ class Credit_Case(unittest.TestCase):
             elif "签发机关" == title:
                 key = self.data.get_userinfo().name + "的发证机关"
             send_key_by_input_title(div_fields, title, key)
-        find_element(self.browser, By.CLASS_NAME, "el-checkbox__inner").click()  ##长期有效
+        element_send_key(find_elements(self.browser, By.CLASS_NAME, "el-range-input")[0], "2018-01-01")
+        element_send_key(find_elements(self.browser, By.CLASS_NAME, "el-range-input")[1], "2030-01-01")
 
     def credit_add_others(self):
         for a in range(1, 4):
@@ -120,6 +120,13 @@ class Credit_Case(unittest.TestCase):
                 else:
                     break
 
+
+    def click_selcet_li_by_text(self, text):
+        self.n = self.n + 1
+        element_div = find_element(self.browser, By.XPATH, "/html/body/div[" + str(self.n) + "]")
+        select_element = find_element_by_text_element(element_div, By.TAG_NAME, "li", text)
+        element_click(select_element)
+
     def test_CarTyp(self, cartype):
 
         div_fields = find_element(self.browser, By.CLASS_NAME, "comp-form-item-fields")
@@ -129,10 +136,8 @@ class Credit_Case(unittest.TestCase):
             if "业务类型" == field_name:
                 element_click(
                     find_next_input_by_element(fields_elements[i]))
-        lis = find_elements(self.browser, By.TAG_NAME, "li")
-        for i in range(0, len(lis)):
-            if cartype == lis[i].text:
-                element_click(lis[i])
+                break
+        self.click_selcet_li_by_text(cartype)
 
     def test_Bank(self, bankname):
         div_fields = find_element(self.browser, By.CLASS_NAME, "comp-form-item-fields")
@@ -142,12 +147,8 @@ class Credit_Case(unittest.TestCase):
             if "贷款银行" == field_name:
                 element_click(
                     find_next_input_by_element(fields_elements[i]))
-        lis = find_elements(self.browser, By.TAG_NAME, "li")
-        for i in range(0, len(lis)):
-            if bankname == lis[i].text:
-                element_click(lis[i])
                 break
-
+        self.click_selcet_li_by_text(bankname)
     def submit(self):
         buttons = find_elements(self.browser, By.TAG_NAME, "button")
         for i in range(0, len(buttons)):
@@ -159,10 +160,7 @@ class Credit_Case(unittest.TestCase):
             if "确定" == buttons[i].text:
                 element_click(buttons[i])
 
-    def test_R_X_Credit(self):
-        '''建设银行新车 -tang'''
-    def test_R_E_Credit(self):
-        '''建设银行二手车-hu'''
+
     def test_E_X_Credit(self):
         '''E分期银行新车-ouy'''
         cartype = "新车"
@@ -170,8 +168,9 @@ class Credit_Case(unittest.TestCase):
         self.credit()
         self.test_CarTyp(cartype)
         self.test_Bank(bankname)
+        self.credit_add_others()
         self.submit()
-        # self.credit_add_others()
+
     def test_E_E_Credit(self):
         '''E分期银行二手车-niu'''
     def tearDown(self):
