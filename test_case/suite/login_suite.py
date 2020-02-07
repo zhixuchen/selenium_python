@@ -11,7 +11,7 @@ def suite():
     suite.addTest(login_case.Login_Case('test_loginsSuccessbysms_code'))
     suite.addTest(login_case.Login_Case('test_nulluser'))
     suite.addTest(login_case.Login_Case('test_nullpwd'))
-    suite.addTest(login_case.Login_Case('test_nulltxtVerify'))
+    suite.addTest(login_case.Login_Case('test_null_Verify'))
     suite.addTest(login_case.Login_Case('test_error_Verify'))
     suite.addTest(login_case.Login_Case('test_error_account'))
     suite.addTest(login_case.Login_Case('test_error_pwd'))

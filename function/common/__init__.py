@@ -3,15 +3,16 @@
 # author:zxchen
 # datetime:2020/1/8 12:58
 # software: PyCharm
+import unittest
+class check():
+    def checkEqual(self, first, second, msg):
+        self.assertEqual(first,second,msg)
 
 
-def test():
-    test1()
-def test1():
-    print("234234234")
 
 if __name__ == '__main__':
 
-    test()
+    a=check()
+    a.checkEqual("1","2","不相等")
 
 

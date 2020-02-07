@@ -5,30 +5,29 @@
 # software: PyCharm
 from test_case.case import *
 
-TestData = Test_Data()
-data = Data()
-
 class Card_Case(unittest.TestCase):
-    def setUp(self):
-        self.driver = Driver()
-        self.browser = self.driver.chrome_browser
-        self.n = 1
-        self.log = Logs()
+    def setUp(self):##初始化
+        self.driver = Driver() ##初始化浏览器驱动
+        self.browser = self.driver.chrome_browser ##启动谷歌驱动
+        self.n = 1 ##设置全局变量n，初始默认为1
+        self.log = Logs() ##初始化日志类
+        self.data = Data()  ##初始化测试数据类
+        self.login()  ## 打开登录页面
+        self.loginbypwd() ## 通过密码登录
 
-    def login(self):
+    def login(self):## 打开登录页面
         try:
-            data = Data()
-            url = data.url
+            self.data = Data()
+            url = self.data.url
             self.browser.get(url)
         except Exception as e:
             self.log.log_error(e)
             catch_image(self.browser)
 
-    def loginbypwd(self):
+    def loginbypwd(self): ## 通过密码登录
         try:
-            data = Data()
-            account = data.get_account("kk_account")
-            pwd = data.get_pwd("kk_pwd")
+            account = self.data.get_account("kk_account")
+            pwd = self.data.get_pwd("kk_pwd")
             find_elements(self.browser, By.CLASS_NAME, "el-input__inner")[0].send_keys(account)
             find_elements(self.browser, By.CLASS_NAME, "el-input__inner")[1].send_keys(pwd)
             find_elements(self.browser, By.TAG_NAME, "button")[0].click()
@@ -65,7 +64,7 @@ class Card_Case(unittest.TestCase):
                 elif label.text in ["住宅邮编", "住宅详细地址", "单位名称", "单位邮编", "详细地址", "联系人姓名", "联系人手机"]:
                     element_send_key(input_element, label.text)
                     if "联系人手机" == label.text:
-                        element_send_key(input_element, data.get_userinfo().mobile)
+                        element_send_key(input_element, self.data.get_userinfo().mobile)
                 elif label.text in ["住宅地址", "何时入住", "单位电话", "单位地址", "何时入职", "联系人电话", "职业及职级","单位性质"]:
                     element = input_element
                     if label.text in ["住宅地址", "单位地址"]:
@@ -105,6 +104,7 @@ class Card_Case(unittest.TestCase):
                 defult = input_element.get_attribute('value')
                 self.check_defult(label.text, defult)
         self.log.log_info("开卡页面默认值校验通过")
+
 
     def stage(self):
         '''分期信息测试'''
@@ -162,13 +162,13 @@ class Card_Case(unittest.TestCase):
                     elif "个人总资产" == label.text:
                         element_send_key(input_element, "3000000")
                     elif "权属人姓名" == label.text:
-                        element_send_key(input_element, data.get_userinfo().name)
+                        element_send_key(input_element, self.data.get_userinfo().name)
                 elif label.text in ["现住房面积", "权属人姓名", "关联人月收入", "抵押合同编号"]:  ##页面特殊处理
                     self.browser.execute_script("arguments[0].click()", input_element)
                     if "现住房面积" == label.text:
                         element_send_key(input_element, "123.8")
                     elif "权属人姓名" == label.text:
-                        element_send_key(input_element, data.get_userinfo().name)
+                        element_send_key(input_element, self.data.get_userinfo().name)
                     elif "关联人月收入" == label.text:
                         element_send_key(input_element, "5000")
                     elif "抵押合同编号" == label.text:
@@ -226,28 +226,18 @@ class Card_Case(unittest.TestCase):
         self.check_finance(finance_data)
         self.log.log_info("分期页面金额计算校验通过")
 
-    def click_selcet_li_by_text(self, text):
+    def click_selcet_li_by_text(self, text):##点击下拉选择项
         self.n = self.n + 1
         element_div = find_element(self.browser, By.XPATH, "/html/body/div[" + str(self.n) + "]")
         select_element = find_element_by_text_element(element_div, By.TAG_NAME, "li", text)
         element_click(select_element)
 
-    def check_defult(self, check, defult):
+    def check_defult(self, check, defult): ##检验默认值
         title_div = find_elements(self.browser, By.CLASS_NAME, "lcomp-module-pane")[0]
         title_element = find_element_by_text_element(title_div, By.TAG_NAME, "span", "业务品种")
         car_type = find_next_element(title_element).text
         if check in ["手机号码", "身份证号", "姓名", "证件有效期", "车辆价格"]:
-            if "手机号码" == check:
-                error_msg = "手机号码为空"
-            elif "身份证号" == check:
-                error_msg = "身份证号为空"
-            elif "姓名" == check:
-                error_msg = "姓名为空"
-            elif "证件有效期" == check:
-                error_msg = "证件有效期为空"
-            elif "车辆价格" == check:
-                error_msg = "车辆价格为空"
-            self.checkIsNotNone(defult, error_msg)
+            self.assertIsNotNone(defult)
         else:
             if "领卡地区号" == check:
                 error_msg = "领卡地区号错误"
@@ -285,9 +275,9 @@ class Card_Case(unittest.TestCase):
                     check_value = "80"
                 elif car_type == "二手车":
                     check_value = "70"
-            self.checkEqual(check_value, defult, error_msg)
+            self.assertEqual(check_value, defult, error_msg)
 
-    def check_select_list(self, check_list, select_div):
+    def check_select_list(self, check_list, select_div): ##检验下拉框内的值是否显示完整
         for check in check_list:
             label = find_element_by_text_element(select_div, By.TAG_NAME, "label", check)
             next_div = find_next_element(label)
@@ -324,9 +314,9 @@ class Card_Case(unittest.TestCase):
             elif "收款对象类型" == check:
                 true_list = ["第三方机构", "合作单位"]
             for i in range(0, len(true_list)):
-                self.checkEqual(true_list[i], lis[i].get_attribute("textContent"), check + "列表校验失败")
+                self.assertEqual(true_list[i], lis[i].get_attribute("textContent"), check + "列表校验失败")
 
-    def check_finance(self, finance_data):
+    def check_finance(self, finance_data): ##检验打款信息
         car_price = float(finance_data["car_price"])  # 车辆价格
         loan_money = float(finance_data["loan_money"])  # 贷款金额合计
         sf_money = float(finance_data["sf_money"])  # 首付金额
@@ -352,58 +342,40 @@ class Card_Case(unittest.TestCase):
         true_poundage_amount = round((loan_money * commission_fee_rate) / 100)
         true_loan_money = int(math.ceil((contract_loan_money + contract_loan_money * (
                 company_service_rate - commission_fee_rate) / 100) / 100)) * 100  # 取百
-        self.checkEqual(ture_sf_money, sf_money, "首付金额计算有误（首付金额=车辆价格-贷款金额合计）")
-        self.checkEqual(true_sf_proportion, sf_proportion, "首付比例计算有误（首付比例=首付金额/车辆价格*100%）")
-        self.checkEqual(ture_first_month_money, first_month_money, "首月还款计算有误（首月还款=（贷款金额合计+手续费总额）-月还款金额×（贷款期数-1））")
-        self.checkEqual(true_month_money, month_money, "月还款金额计算有误(月还款金额=贷款金额合计/贷款期数+手续费总额/贷款期数)")
-        self.checkEqual(true_poundage_amount, poundage_amount, "手续费总额计算有误(手续费总额=贷款金额合计×分期手续费率)")
-        self.checkEqual(true_loan_money, loan_money, "贷款金额合计计算有误(贷款金额合计 = 实际贷款额 + 实际贷款额×（总利率 - 分期手续费率）)")
-        # self.checkEqual(ture_contract_sf_ratio, contract_sf_ratio, "收入还贷比计算有误(收入还贷比=其他月还款额/还款人月均总收入)")
-        self.checkEqual(insureamt, car_price, "车损险投保金额和车辆价格不符")
-        self.checkEqual(mortvalue, car_price, "抵押品价值和车辆价格不符")
+        self.assertEqual(ture_sf_money, sf_money, "首付金额计算有误（首付金额=车辆价格-贷款金额合计）")
+        self.assertEqual(true_sf_proportion, sf_proportion, "首付比例计算有误（首付比例=首付金额/车辆价格*100%）")
+        self.assertEqual(ture_first_month_money, first_month_money, "首月还款计算有误（首月还款=（贷款金额合计+手续费总额）-月还款金额×（贷款期数-1））")
+        self.assertEqual(true_month_money, month_money, "月还款金额计算有误(月还款金额=贷款金额合计/贷款期数+手续费总额/贷款期数)")
+        self.assertEqual(true_poundage_amount, poundage_amount, "手续费总额计算有误(手续费总额=贷款金额合计×分期手续费率)")
+        self.assertEqual(true_loan_money, loan_money, "贷款金额合计计算有误(贷款金额合计 = 实际贷款额 + 实际贷款额×（总利率 - 分期手续费率）)")
+        self.assertEqual(ture_contract_sf_ratio, contract_sf_ratio, "收入还贷比计算有误(收入还贷比=其他月还款额/还款人月均总收入)")
+        self.assertEqual(insureamt, car_price, "车损险投保金额和车辆价格不符")
+        self.assertEqual(mortvalue, car_price, "抵押品价值和车辆价格不符")
 
-    def checkEqual(self, first, second, msg):
-        try:
-            self.assertEqual(first, second, msg=None)
-        except Exception as e:
-            self.log.log_error(msg)
-            catch_image(self.browser)
-            self.assertEqual(first, second, msg=None)
-            raise
-
-    def checkIsNotNone(self, obj, msg=None):
-        try:
-            self.assertIsNotNone(obj, msg=None)
-        except Exception as e:
-            self.log.log_error(msg)
-            catch_image(self.browser)
-            self.assertIsNotNone(obj, msg=None)
-            raise
-
-    def test_Claim(self, car_type):  ##认领操作
+    def Claim(self, car_type):  ##认领操作
         element = find_element(self.browser, By.LINK_TEXT, "开卡分期/承保申请")
         element_click(element)
-        element_click(find_element_by_text(self.browser, By.TAG_NAME, "div", "待认领案件"))
+        element_click(find_element(self.browser, By.ID, "tab-1"))
         self.claim_input_car_type(car_type)
-        find_elements(self.browser, By.CLASS_NAME, "el-table__row")  # 隐性等待，等待列表元素都展示出来
+        find_element(self.browser, By.CLASS_NAME, "has-gutter")  # 隐性等待，等待列表元素都展示出来
         element_click(find_element_by_text(self.browser, By.TAG_NAME, "button", "认领"))
 
-    def test_UnClaim(self):  ##退件操作
+    def UnClaim(self):  ##退件操作
         element = find_element(self.browser, By.LINK_TEXT, "开卡分期/承保申请")
         element_click(element)
-        element_click(find_element_by_text(self.browser, By.TAG_NAME, "div", "待处理案件"))
-        find_elements(self.browser, By.CLASS_NAME, "el-table__row")  # 隐性等待，等待列表元素都展示出来
+        element_click(find_element(self.browser, By.ID, "tab-2"))
+        find_element(self.browser, By.CLASS_NAME, "has-gutter")  # 隐性等待，等待列表元素都展示出来
         element_click(find_element_by_text(self.browser, By.TAG_NAME, "button", "退件"))
 
-    def test_Handle(self, car_type):  ##处理操作
+    def Handle(self, car_type):  ##处理操作
         element = find_element(self.browser, By.LINK_TEXT, "开卡分期/承保申请")
         element_click(element)
-        element_click(find_element_by_text(self.browser, By.TAG_NAME, "div", "待处理案件"))
+        element_click(find_element(self.browser, By.ID, "tab-2"))
         self.unclaim_input_car_type(car_type)
-        find_elements(self.browser, By.CLASS_NAME, "el-table__row")  # 隐性等待，等待列表元素都展示出来
+        find_element(self.browser, By.CLASS_NAME, "has-gutter")  # 隐性等待，等待列表元素都展示出来
         element_click(find_element_by_text(self.browser, By.TAG_NAME, "button", "处理"))
 
-    def claim_input_car_type(self, car_type):
+    def claim_input_car_type(self, car_type): ##待认领搜索车型
         claim_select_div = find_elements(self.browser, By.CLASS_NAME, "comp-form-item-fields")[0]
         select_labels = find_elements_by_element(claim_select_div, By.TAG_NAME, "label")
         for select_label in select_labels:
@@ -415,7 +387,7 @@ class Card_Case(unittest.TestCase):
         search_button = find_element_by_element(claim_select_div, By.TAG_NAME, "button")
         element_click(search_button)
 
-    def unclaim_input_car_type(self, car_type):
+    def unclaim_input_car_type(self, car_type):##待处理搜索车型
         self.log.log_info(car_type)
         claim_select_div = find_elements(self.browser, By.CLASS_NAME, "comp-form-item-fields")[1]
         select_labels = find_elements_by_element(claim_select_div, By.TAG_NAME, "label")
@@ -427,10 +399,10 @@ class Card_Case(unittest.TestCase):
         search_button = find_element_by_element(claim_select_div, By.TAG_NAME, "button")
         element_click(search_button)
 
-    def storage(self):
+    def storage(self):#暂存操作
         element_click(find_element_by_text(self.browser, By.TAG_NAME, "button", "暂存"))
 
-    def submit(self):
+    def submit(self):#提交操作
         title_div = find_elements(self.browser, By.CLASS_NAME, "lcomp-module-pane")[0]
         title_element = find_element_by_text_element(title_div, By.TAG_NAME, "span", "业务品种")
         car_type = find_next_element(title_element).text
@@ -453,10 +425,8 @@ class Card_Case(unittest.TestCase):
     def test_CardSuccess(self):
         '''开卡分期/承保申请测试'''
         car_type = "新车"
-        self.login()
-        self.loginbypwd()
-        self.test_Claim(car_type)
-        self.test_Handle(car_type)
+        self.Claim(car_type)
+        self.Handle(car_type)
         self.card()
         self.stage()
         # self.storage()

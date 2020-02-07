@@ -38,7 +38,7 @@ class Login_Case(unittest.TestCase):
             find_elements(self.browser, By.TAG_NAME, "button")[0].click()  # 获取验证码按钮
             find_elements(self.browser, By.CLASS_NAME, "el-input__inner")[1].send_keys(sms_code)  # 验证码输入框
             find_elements(self.browser, By.TAG_NAME, "button")[1].click()  # 登录
-        except Exception as  e:
+        except Exception as e:
             self.log.log_error(e)
             catch_image(self.browser)
 
@@ -49,7 +49,9 @@ class Login_Case(unittest.TestCase):
         self.login()
         self.loginbypwd(account, pwd)
         tip = find_element(self.browser, By.CLASS_NAME, "header-title").text
-        self.assertEqual(tip, '林润云系统')
+        self.assertEqual(tip, '林润云系统',"登录失败")
+
+
     def test_loginsSuccessbysms_code(self):
         '''登录成功通过验证码'''
         account = self.data.get_account("xs_account")
@@ -57,7 +59,7 @@ class Login_Case(unittest.TestCase):
         self.login()
         self.loginbysms(account, sms_code)
         tip = find_element(self.browser, By.CLASS_NAME, "header-title").text
-        self.assertEqual(tip, '林润云系统')
+        self.assertEqual(tip, '林润云系统',"登录失败")
 
 
     def test_error_account(self):
@@ -101,7 +103,7 @@ class Login_Case(unittest.TestCase):
         error_tip = find_element(self.browser, By.CLASS_NAME, "el-form-item__error").text
         self.assertEqual(error_tip, '密码不能为空')
 
-    def test_nulltxtVerify(self):
+    def test_null_Verify(self):
         '''验证码为空-huyx'''
         account = self.data.get_account("xs_account")
         sms_code = ""
