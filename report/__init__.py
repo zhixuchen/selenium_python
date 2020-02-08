@@ -5,6 +5,7 @@
 # software: PyCharm
 import smtplib
 import time
+import paramiko
 from email import encoders
 from email.header import Header
 from email.mime.base import MIMEBase
@@ -29,9 +30,24 @@ my_user = my_user.split(',')
 directory_time = time.strftime("%Y-%m-%d", time.localtime(time.time()))
 
 class Report():
+    def upload_remote_server(file_name):
+        ip = get("remote", "ip")
+        port = int(get("remote", "port"))
+        user = get("remote", "user")
+        pwd = get("remote", "pwd")
+        ssh = paramiko.Transport((ip, port))
+        ssh.connect(username=user, password=pwd)
+        sftp = paramiko.SFTPClient.from_transport(ssh)
+        remote_file="/home/wwwroot/report/"+file_name.split("\\")[-2]+"/"+file_name.split("\\")[-1]
+        try:
+            sftp.put(file_name, remote_file)
+        except Exception as e:
+            sftp.mkdir("/home/wwwroot/report/"+file_name.split("\\")[-2])
+            sftp.put(file_name, remote_file)
+        finally:
+            return "http://report.zxchen.saasyc.com/"+file_name.split("\\")[-2]+"/"+file_name.split("\\")[-1]
     def build_report(suite_tests, report_name, description):
         picture_time = time.strftime("%Y-%m-%d-%H_%M_%S", time.localtime(time.time()))
-
         report_name = report_name + picture_time
         try:
             File_Path = path + directory_time + '\\'
@@ -76,10 +92,11 @@ class Report():
             encoders.encode_base64(attach)
             fp.close()
             return attach
-
     def report(suite_tests,report_name,description):
         try:
             name = Report.build_report(suite_tests, report_name, description)
+            report_path = Report.upload_remote_server(name)
+            print(report_path)
             # Report.sent_email(name)
         except Exception as e:
             return False
@@ -87,4 +104,8 @@ class Report():
 
 
 if __name__ == '__main__':
-    Report.sent_email("C:\\Users\\Administrator\\Desktop\\new_file.html")
+    # Report.sent_email("C:\\Users\\Administrator\\Desktop\\new_file.html")
+
+    local="D:\work\selenium_python\\report\html\\2020-02-08\Report2020-02-08-11_12_34.html"
+    report=Report.upload_remote_server(local)
+    print(report)

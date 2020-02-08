@@ -9,9 +9,16 @@ from logging import handlers
 root_path = os.path.abspath(os.path.dirname(__file__)).split('selenium_python')[0]
 log_path=root_path+"selenium_python\\report\\logs\\"
 log_time = time.strftime("%Y-%m-%d", time.localtime(time.time()))
+directory_time = time.strftime("%Y-%m-%d", time.localtime(time.time()))
 class Logs():
     def __init__(self):
-        self.log= Logger(log_path+log_time+'.log',level='debug')
+        try:
+            File_Path = root_path + '\\selenium_python\\report\\logs\\' + directory_time + '\\'
+            if not os.path.exists(File_Path):
+                os.makedirs(File_Path)
+        except BaseException as msg:
+            print("新建目录失败：%s" % msg)
+        self.log= Logger(File_Path+log_time+'.log',level='debug')
     def log_info(self,logs):
         self.log.logger.info(logs)
     def log_debug(self,logs):
