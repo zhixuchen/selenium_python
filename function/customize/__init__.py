@@ -3,16 +3,7 @@
 # author:zxchen
 # datetime:2019/11/4 18:00
 # software: PyCharm
-import datetime
-import hashlib
-import json
-import random
-import time
-
-import pymysql
-import requests
-
-from function.config import *
+from function import *
 
 
 def get_get_param(request):
@@ -451,7 +442,7 @@ class User():
 
 if __name__ == '__main__':
     try:
-      print(get_idcard())
+        print(get_idcard())
 
 
     except Exception as e:

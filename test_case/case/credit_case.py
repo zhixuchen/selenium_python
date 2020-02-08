@@ -13,12 +13,14 @@ class Credit_Case(unittest.TestCase):
     def setUp(self):
         self.data = Data()
         self.TestData = Test_Data()
-        self.n=1
+        self.n = 1
         self.driver = Driver()
         self.browser = self.driver.chrome_browser
         self.log = Logs()
+        self.image = Image()  ## 初始化截屏功能
         self.login()
         self.loginbypwd()
+
 
     def login(self):
         try:
@@ -26,7 +28,7 @@ class Credit_Case(unittest.TestCase):
             self.browser.get(url)
         except Exception as e:
             self.log.log_error(e)
-            catch_image(self.browser)
+            self.image.catch_image(self.browser)
 
     def loginbypwd(self):
         try:
@@ -37,7 +39,7 @@ class Credit_Case(unittest.TestCase):
             find_elements(self.browser, By.TAG_NAME, "button")[0].click()
         except Exception as e:
             self.log.log_error(e)
-            catch_image(self.browser)
+            self.image.catch_image(self.browser)
 
     def credit(self):
         element = find_element(self.browser, By.LINK_TEXT, "征信进件")
@@ -66,7 +68,7 @@ class Credit_Case(unittest.TestCase):
 
     def credit_add_others(self):
         for a in range(1, 4):
-            action_button_div=find_element(self.browser,By.CLASS_NAME,"action-btns")
+            action_button_div = find_element(self.browser, By.CLASS_NAME, "action-btns")
             buttons = find_elements_by_element(action_button_div, By.TAG_NAME, "button")
             if a == 3:
                 for i in range(0, len(buttons)):
@@ -121,7 +123,6 @@ class Credit_Case(unittest.TestCase):
                 else:
                     break
 
-
     def click_selcet_li_by_text(self, text):
         self.n = self.n + 1
         element_div = find_element(self.browser, By.XPATH, "/html/body/div[" + str(self.n) + "]")
@@ -154,11 +155,12 @@ class Credit_Case(unittest.TestCase):
     def select_time(self):
         element_send_key(find_elements(self.browser, By.CLASS_NAME, "el-range-input")[0], "2018-01-01")
         element_send_key(find_elements(self.browser, By.CLASS_NAME, "el-range-input")[1], "2030-01-01")
+
     def check_Equal(self, first, second, msg=None):
         try:
             self.assertEqual(first, second, msg=None)
         except AssertionError:
-            catch_image(self.browser)
+            self.image.catch_image(self.browser)
             raise
 
     def submit(self):
@@ -196,6 +198,7 @@ class Credit_Case(unittest.TestCase):
         self.select_time()
         self.credit_add_others()
         self.submit()
+
     def tearDown(self):
         self.log.log_info("测试结束")
         time.sleep(3)

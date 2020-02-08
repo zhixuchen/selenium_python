@@ -11,7 +11,8 @@ class Operation_Examine(unittest.TestCase):
         self.driver = Driver()
         self.browser = self.driver.chrome_browser
         self.n = 1
-        self.log=Logs()
+        self.log = Logs()
+        self.image = Image()  ## 初始化截屏功能
         self.login()
         self.loginbypwd()
 
@@ -22,7 +23,7 @@ class Operation_Examine(unittest.TestCase):
             self.browser.get(url)
         except Exception as e:
             self.log.log_error(e)
-            catch_image(self.browser)
+            self.image.catch_image(self.browser)
 
     def loginbypwd(self):
         try:
@@ -34,13 +35,12 @@ class Operation_Examine(unittest.TestCase):
             find_elements(self.browser, By.TAG_NAME, "button")[0].click()
         except Exception as e:
             self.log.log_error(e)
-            catch_image(self.browser)
+            self.image.catch_image(self.browser)
 
     def examine(self):
-        tab_stage=find_element(self.browser,By.ID,"tab-stage")
+        tab_stage = find_element(self.browser, By.ID, "tab-stage")
         element_click(tab_stage)
         time.sleep(10)
-
 
     def click_selcet_li_by_text(self, text):
         self.n = self.n + 1
@@ -144,7 +144,7 @@ class Operation_Examine(unittest.TestCase):
             self.assertEqual(first, second, msg=None)
         except Exception as e:
             self.log.log_error(msg)
-            catch_image(self.browser)
+            self.image.catch_image(self.browser)
             self.assertEqual(first, second, msg=None)
             raise
 
@@ -153,27 +153,27 @@ class Operation_Examine(unittest.TestCase):
             self.assertIsNotNone(obj, msg=None)
         except Exception as e:
             self.log.log_error(msg)
-            catch_image(self.browser)
+            self.image.catch_image(self.browser)
             self.assertIsNotNone(obj, msg=None)
             raise
 
-    def test_Claim(self, car_type,examine):  ##认领操作
-        element = find_element(self.browser, By.LINK_TEXT, "用户审核("+examine+")")
+    def test_Claim(self, car_type, examine):  ##认领操作
+        element = find_element(self.browser, By.LINK_TEXT, "用户审核(" + examine + ")")
         element_click(element)
         element_click(find_element_by_text(self.browser, By.TAG_NAME, "div", "待认领案件"))
         self.claim_input_car_type(car_type)
         find_elements(self.browser, By.CLASS_NAME, "el-table__row")  # 隐性等待，等待列表元素都展示出来
         element_click(find_element_by_text(self.browser, By.TAG_NAME, "button", "认领"))
 
-    def test_UnClaim(self,examine):  ##退件操作
-        element = find_element(self.browser, By.LINK_TEXT, "用户审核("+examine+")")
+    def test_UnClaim(self, examine):  ##退件操作
+        element = find_element(self.browser, By.LINK_TEXT, "用户审核(" + examine + ")")
         element_click(element)
         element_click(find_element_by_text(self.browser, By.TAG_NAME, "div", "待处理案件"))
         find_elements(self.browser, By.CLASS_NAME, "el-table__row")  # 隐性等待，等待列表元素都展示出来
         element_click(find_element_by_text(self.browser, By.TAG_NAME, "button", "退件"))
 
-    def test_Handle(self, car_type,examine):  ##处理操作
-        element = find_element(self.browser, By.LINK_TEXT, "用户审核("+examine+")")
+    def test_Handle(self, car_type, examine):  ##处理操作
+        element = find_element(self.browser, By.LINK_TEXT, "用户审核(" + examine + ")")
         element_click(element)
         element_click(find_element_by_text(self.browser, By.TAG_NAME, "div", "待处理案件"))
         self.unclaim_input_car_type(car_type)
@@ -204,20 +204,18 @@ class Operation_Examine(unittest.TestCase):
         search_button = find_element_by_element(claim_select_div, By.TAG_NAME, "button")
         element_click(search_button)
 
-    def examine_text(self,text,examine):
+    def examine_text(self, text, examine):
         time.sleep(0.5)
-        examine_h4=find_element_by_text(self.browser,By.TAG_NAME,"h4","用户审核("+examine+")")
+        examine_h4 = find_element_by_text(self.browser, By.TAG_NAME, "h4", "用户审核(" + examine + ")")
         examine_div = find_next_element(examine_h4)
         labels = find_elements_by_element(examine_div, By.TAG_NAME, "label")
         for label in labels:
             if label.text == "审核结果":
                 input_element = find_next_input_by_element(label)
-                element_click_script(self.browser,input_element)
+                element_click_script(self.browser, input_element)
                 self.click_selcet_li_by_text(text)
                 break
         time.sleep(10)
-
-
 
     def storage(self):
         element_click(find_element_by_text(self.browser, By.TAG_NAME, "button", "暂存"))
@@ -245,23 +243,24 @@ class Operation_Examine(unittest.TestCase):
     def test_ExamineFirstSuccess(self):
         '''运营中心审核一审'''
         car_type = "新车"
-        examine="一审"
-        text="通过"
-        self.test_Claim(car_type,examine)
-        self.test_Handle(car_type,examine)
-        self.examine_text(text,examine)
+        examine = "一审"
+        text = "通过"
+        self.test_Claim(car_type, examine)
+        self.test_Handle(car_type, examine)
+        self.examine_text(text, examine)
         # self.examine()
 
         # self.storage()
         self.submit()
+
     def test_ExamineSecondSuccess(self):
         '''运营中心审核二审'''
         car_type = "新车"
-        examine="二审"
-        text="通过"
+        examine = "二审"
+        text = "通过"
         self.test_Claim(car_type, examine)
-        self.test_Handle(car_type,examine)
-        self.examine_text(text,examine)
+        self.test_Handle(car_type, examine)
+        self.examine_text(text, examine)
         self.submit()
 
     def test_ExamineThirdSuccess(self):
@@ -271,8 +270,9 @@ class Operation_Examine(unittest.TestCase):
         text = "通过"
         self.test_Claim(car_type, examine)
         self.test_Handle(car_type, examine)
-        self.examine_text(text,examine)
+        self.examine_text(text, examine)
         self.submit()
+
     def test_ExamineReject(self):
         '''运营中心审核拒件'''
         car_type = "新车"
@@ -294,6 +294,7 @@ class Operation_Examine(unittest.TestCase):
 
         self.storage()
         # self.submit()
+
     def tearDown(self):
         self.log.log_info("运营中心审核测试结束")
         time.sleep(3)

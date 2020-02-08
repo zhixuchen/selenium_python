@@ -3,16 +3,15 @@
 # author:zxchen
 # datetime:2018/10/16 13:05
 # software: PyCharm
-import configparser
-import logging
-import os
+from function import *
+
 
 def get(title, string):
     try:
         root_path = os.path.abspath(os.path.dirname(__file__)).split('selenium_python')[0]
-        path=root_path+"\\selenium_python\\function\\config"
+        path = root_path + "\\selenium_python\\function\\config"
         config = configparser.ConfigParser()
-        config.read(path+"\\Config.ini")
+        config.read(path + "\\Config.ini")
         result = config.get(title, string)
         return result
     except Exception as e:

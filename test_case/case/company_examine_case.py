@@ -12,6 +12,7 @@ class Company_Examine(unittest.TestCase):
         self.driver = Driver()
         self.browser = self.driver.chrome_browser
         self.n = 1
+        self.image = Image()  ## 初始化截屏功能
         self.log=Logs()
         self.login()
         self.loginbypwd()
@@ -23,7 +24,7 @@ class Company_Examine(unittest.TestCase):
             self.browser.get(url)
         except Exception as e:
             self.log.log_error(e)
-            catch_image(self.browser)
+            self.image.catch_image(self.browser)
 
     def loginbypwd(self):
         try:
@@ -35,7 +36,7 @@ class Company_Examine(unittest.TestCase):
             find_elements(self.browser, By.TAG_NAME, "button")[0].click()
         except Exception as e:
             self.log.log_error(e)
-            catch_image(self.browser)
+            self.image.catch_image(self.browser)
 
     def examine(self):
         tab_stage=find_element(self.browser,By.ID,"tab-stage")
@@ -145,7 +146,7 @@ class Company_Examine(unittest.TestCase):
             self.assertEqual(first, second, msg=None)
         except Exception as e:
             self.log.log_error(msg)
-            catch_image(self.browser)
+            self.image.catch_image(self.browser)
             self.assertEqual(first, second, msg=None)
             raise
 
@@ -154,7 +155,7 @@ class Company_Examine(unittest.TestCase):
             self.assertIsNotNone(obj, msg=None)
         except Exception as e:
             self.log.log_error(msg)
-            catch_image(self.browser)
+            self.image.catch_image(self.browser)
             self.assertIsNotNone(obj, msg=None)
             raise
 

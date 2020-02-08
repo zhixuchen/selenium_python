@@ -5,26 +5,28 @@
 # software: PyCharm
 from test_case.case import *
 
-class Card_Case(unittest.TestCase):
-    def setUp(self):##初始化
-        self.driver = Driver() ##初始化浏览器驱动
-        self.browser = self.driver.chrome_browser ##启动谷歌驱动
-        self.n = 1 ##设置全局变量n，初始默认为1
-        self.log = Logs() ##初始化日志类
-        self.data = Data()  ##初始化测试数据类
-        self.login()  ## 打开登录页面
-        self.loginbypwd() ## 通过密码登录
 
-    def login(self):## 打开登录页面
+class Card_Case(unittest.TestCase):
+    def setUp(self):  ##初始化
+        self.driver = Driver()  ##初始化浏览器驱动
+        self.browser = self.driver.chrome_browser  ##启动谷歌驱动
+        self.n = 1  ##设置全局变量n，初始默认为1
+        self.log = Logs()  ##初始化日志类
+        self.data = Data()  ##初始化测试数据类
+        self.image = Image() ## 初始化截屏功能
+        self.login()  ## 打开登录页面
+        self.loginbypwd()  ## 通过密码登录
+
+    def login(self):  ## 打开登录页面
         try:
             self.data = Data()
             url = self.data.url
             self.browser.get(url)
         except Exception as e:
             self.log.log_error(e)
-            catch_image(self.browser)
+            self.image.catch_image(self.browser)
 
-    def loginbypwd(self): ## 通过密码登录
+    def loginbypwd(self):  ## 通过密码登录
         try:
             account = self.data.get_account("kk_account")
             pwd = self.data.get_pwd("kk_pwd")
@@ -33,7 +35,7 @@ class Card_Case(unittest.TestCase):
             find_elements(self.browser, By.TAG_NAME, "button")[0].click()
         except Exception as e:
             self.log.log_error(e)
-            catch_image(self.browser)
+            self.image.catch_image(self.browser)
 
     def card(self):
         '''开卡测试'''
@@ -49,7 +51,7 @@ class Card_Case(unittest.TestCase):
         for label in labels:
             try:
                 input_element = find_next_input_by_element(label)
-                if label.text in ["婚姻状况", "受教育程度", "住宅状况", "职务",  "与开卡人关系"]:
+                if label.text in ["婚姻状况", "受教育程度", "住宅状况", "职务", "与开卡人关系"]:
                     element_click(input_element)
                     if "婚姻状况" == label.text:
                         self.click_selcet_li_by_text("未婚(无配偶)")
@@ -65,7 +67,7 @@ class Card_Case(unittest.TestCase):
                     element_send_key(input_element, label.text)
                     if "联系人手机" == label.text:
                         element_send_key(input_element, self.data.get_userinfo().mobile)
-                elif label.text in ["住宅地址", "何时入住", "单位电话", "单位地址", "何时入职", "联系人电话", "职业及职级","单位性质"]:
+                elif label.text in ["住宅地址", "何时入住", "单位电话", "单位地址", "何时入职", "联系人电话", "职业及职级", "单位性质"]:
                     element = input_element
                     if label.text in ["住宅地址", "单位地址"]:
                         self.n = self.n + 1
@@ -93,18 +95,17 @@ class Card_Case(unittest.TestCase):
                             element_send_key(element, "201801")
                     if label.text in ["单位电话", "联系人电话"]:
                         area_element = find_next_inputs_by_element(label)[0]
-                        element_send_key(area_element,"0577")
+                        element_send_key(area_element, "0577")
                         mobile_element = find_next_inputs_by_element(label)[1]
                         element_click(mobile_element)
                         mobile_element = find_next_inputs_by_element(label)[1]
-                        element_send_key(mobile_element,"63891171")
+                        element_send_key(mobile_element, "63891171")
             except Exception as e:
                 self.log.log_error("执行用例失败：" + e)
             if label.text in ["手机号码", "自购车状况", "卡片领取方式", "领卡地区号", "领卡网点号", "身份证号", "姓名", "证件有效期"]:
                 defult = input_element.get_attribute('value')
                 self.check_defult(label.text, defult)
         self.log.log_info("开卡页面默认值校验通过")
-
 
     def stage(self):
         '''分期信息测试'''
@@ -226,13 +227,13 @@ class Card_Case(unittest.TestCase):
         self.check_finance(finance_data)
         self.log.log_info("分期页面金额计算校验通过")
 
-    def click_selcet_li_by_text(self, text):##点击下拉选择项
+    def click_selcet_li_by_text(self, text):  ##点击下拉选择项
         self.n = self.n + 1
         element_div = find_element(self.browser, By.XPATH, "/html/body/div[" + str(self.n) + "]")
         select_element = find_element_by_text_element(element_div, By.TAG_NAME, "li", text)
         element_click(select_element)
 
-    def check_defult(self, check, defult): ##检验默认值
+    def check_defult(self, check, defult):  ##检验默认值
         title_div = find_elements(self.browser, By.CLASS_NAME, "lcomp-module-pane")[0]
         title_element = find_element_by_text_element(title_div, By.TAG_NAME, "span", "业务品种")
         car_type = find_next_element(title_element).text
@@ -277,7 +278,7 @@ class Card_Case(unittest.TestCase):
                     check_value = "70"
             self.check_Equal(check_value, defult, error_msg)
 
-    def check_select_list(self, check_list, select_div): ##检验下拉框内的值是否显示完整
+    def check_select_list(self, check_list, select_div):  ##检验下拉框内的值是否显示完整
         for check in check_list:
             label = find_element_by_text_element(select_div, By.TAG_NAME, "label", check)
             next_div = find_next_element(label)
@@ -316,7 +317,7 @@ class Card_Case(unittest.TestCase):
             for i in range(0, len(true_list)):
                 self.check_Equal(true_list[i], lis[i].get_attribute("textContent"), check + "列表校验失败")
 
-    def check_finance(self, finance_data): ##检验打款信息
+    def check_finance(self, finance_data):  ##检验打款信息
         car_price = float(finance_data["car_price"])  # 车辆价格
         loan_money = float(finance_data["loan_money"])  # 贷款金额合计
         sf_money = float(finance_data["sf_money"])  # 首付金额
@@ -356,14 +357,14 @@ class Card_Case(unittest.TestCase):
         try:
             self.assertEqual(first, second, msg=None)
         except AssertionError:
-            catch_image(self.browser)
+            self.image.catch_image(self.browser)
             raise
 
-    def checkIsNotNone(self,obj,msg=None):
+    def checkIsNotNone(self, obj, msg=None):
         try:
-            self.assertIsNotNone(obj,msg=None)
+            self.assertIsNotNone(obj, msg=None)
         except AssertionError:
-            catch_image(self.browser)
+            self.image.catch_image(self.browser)
             raise
 
     def Claim(self, car_type):  ##认领操作
@@ -389,7 +390,7 @@ class Card_Case(unittest.TestCase):
         find_element(self.browser, By.CLASS_NAME, "has-gutter")  # 隐性等待，等待列表元素都展示出来
         element_click(find_element_by_text(self.browser, By.TAG_NAME, "button", "处理"))
 
-    def claim_input_car_type(self, car_type): ##待认领搜索车型
+    def claim_input_car_type(self, car_type):  ##待认领搜索车型
         claim_select_div = find_elements(self.browser, By.CLASS_NAME, "comp-form-item-fields")[0]
         select_labels = find_elements_by_element(claim_select_div, By.TAG_NAME, "label")
         for select_label in select_labels:
@@ -401,7 +402,7 @@ class Card_Case(unittest.TestCase):
         search_button = find_element_by_element(claim_select_div, By.TAG_NAME, "button")
         element_click(search_button)
 
-    def unclaim_input_car_type(self, car_type):##待处理搜索车型
+    def unclaim_input_car_type(self, car_type):  ##待处理搜索车型
         self.log.log_info(car_type)
         claim_select_div = find_elements(self.browser, By.CLASS_NAME, "comp-form-item-fields")[1]
         select_labels = find_elements_by_element(claim_select_div, By.TAG_NAME, "label")
@@ -413,10 +414,10 @@ class Card_Case(unittest.TestCase):
         search_button = find_element_by_element(claim_select_div, By.TAG_NAME, "button")
         element_click(search_button)
 
-    def storage(self):#暂存操作
+    def storage(self):  # 暂存操作
         element_click(find_element_by_text(self.browser, By.TAG_NAME, "button", "暂存"))
 
-    def submit(self):#提交操作
+    def submit(self):  # 提交操作
         title_div = find_elements(self.browser, By.CLASS_NAME, "lcomp-module-pane")[0]
         title_element = find_element_by_text_element(title_div, By.TAG_NAME, "span", "业务品种")
         car_type = find_next_element(title_element).text

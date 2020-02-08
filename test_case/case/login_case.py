@@ -13,6 +13,7 @@ class Login_Case(unittest.TestCase):
         self.browser = self.driver.chrome_browser
         self.log = Logs()
         self.data = Data()
+        self.image = Image()  ## 初始化截屏功能
 
     def login(self):
         try:
@@ -20,7 +21,7 @@ class Login_Case(unittest.TestCase):
             self.browser.get(url)
         except Exception as e:
             self.log.log_error(e)
-            catch_image(self.browser)
+            self.image.catch_image(self.browser)
 
     def loginbypwd(self, account, pwd):  # 密码登录
         try:
@@ -29,7 +30,7 @@ class Login_Case(unittest.TestCase):
             find_elements(self.browser, By.TAG_NAME, "button")[0].click()
         except Exception as e:
             self.log.log_error(e)
-            catch_image(self.browser)
+            self.image.catch_image(self.browser)
 
     def loginbysms(self, account, sms_code):  # 验证码登录
         try:
@@ -40,13 +41,13 @@ class Login_Case(unittest.TestCase):
             find_elements(self.browser, By.TAG_NAME, "button")[1].click()  # 登录
         except Exception as e:
             self.log.log_error(e)
-            catch_image(self.browser)
+            self.image.catch_image(self.browser)
 
     def check_Equal(self, first, second, msg=None):
         try:
             self.assertEqual(first, second, msg=None)
         except AssertionError:
-            catch_image(self.browser)
+            self.image.catch_image(self.browser)
             raise
 
     def test_loginsSuccessbypwd(self):
@@ -56,8 +57,7 @@ class Login_Case(unittest.TestCase):
         self.login()
         self.loginbypwd(account, pwd)
         tip = find_element(self.browser, By.CLASS_NAME, "header-title").text
-        self.check_Equal(tip, '林润云系统',"登录失败")
-
+        self.check_Equal(tip, '林润云系统', "登录失败")
 
     def test_loginsSuccessbysms_code(self):
         '''登录成功通过验证码'''
@@ -66,25 +66,23 @@ class Login_Case(unittest.TestCase):
         self.login()
         self.loginbysms(account, sms_code)
         tip = find_element(self.browser, By.CLASS_NAME, "header-title").text
-        self.check_Equal(tip, '林润云系统',"登录失败")
-
+        self.check_Equal(tip, '林润云系统', "登录失败")
 
     def test_error_account(self):
         '''用户名不存在-ouyf'''
         account = self.data.get_account("error_account")
-        pwd=self.data.get_pwd("xs_pwd")
+        pwd = self.data.get_pwd("xs_pwd")
         self.login()
-        self.loginbypwd(account,pwd)
+        self.loginbypwd(account, pwd)
         error_tip = find_element(self.browser, By.CLASS_NAME, "el-notification__content").text
         self.check_Equal(error_tip, '用户不存在')
 
-
     def test_error_pwd(self):
         '''密码错误-niu'''
-        account=self.data.get_account("xs_account")
-        pwd="666666"
+        account = self.data.get_account("xs_account")
+        pwd = "666666"
         self.login()
-        self.loginbypwd(account,pwd)
+        self.loginbypwd(account, pwd)
         error_tip1 = find_element(self.browser, By.CLASS_NAME, "el-form-item__error").text
         self.check_Equal(error_tip1, '密码错误')
         error_tip2 = find_element(self.browser, By.CLASS_NAME, "el-notification__content").text
@@ -126,12 +124,11 @@ class Login_Case(unittest.TestCase):
         self.login()
         self.loginbysms(account, sms_code)
         error_tips = find_elements(self.browser, By.CLASS_NAME, "el-notification__content")
-        if len(error_tips)==2:
+        if len(error_tips) == 2:
             self.check_Equal(error_tips[0].text, '发送间隔时间小于60秒')
             self.check_Equal(error_tips[1].text, '请输入正确的验证码')
         else:
             self.check_Equal(error_tips[0].text, '请输入正确的验证码')
-
 
     def tearDown(self):
         self.log.log_info("登录测试结束")
