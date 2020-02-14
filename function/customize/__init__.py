@@ -4,7 +4,7 @@
 # datetime:2019/11/4 18:00
 # software: PyCharm
 from function import *
-
+import requests
 
 def get_get_param(request):
     json_object = {}

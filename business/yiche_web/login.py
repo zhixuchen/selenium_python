@@ -8,7 +8,7 @@
 from business.yiche_web import *
 
 if __name__ == '__main__':
-    suite_tests=login_suite.suite()
+    suite_tests=login_suite.suite()#实例化suite对象
     report_name="REPORT"
     description="登录验证"
     result=Report.report(suite_tests,report_name,description)
