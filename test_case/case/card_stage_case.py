@@ -28,8 +28,8 @@ class Card_Case(unittest.TestCase):
 
     def loginbypwd(self):  ## 通过密码登录
         try:
-            account = self.data.get_account("kk_account")
-            pwd = self.data.get_pwd("kk_pwd")
+            account = self.data.get_account("nq_account")
+            pwd = self.data.get_pwd("nq_pwd")
             find_elements(self.browser, By.CLASS_NAME, "el-input__inner")[0].send_keys(account)
             find_elements(self.browser, By.CLASS_NAME, "el-input__inner")[1].send_keys(pwd)
             find_elements(self.browser, By.TAG_NAME, "button")[0].click()
