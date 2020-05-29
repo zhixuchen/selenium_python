@@ -29,7 +29,7 @@ class Company_Examine(unittest.TestCase):
     def loginbypwd(self):
         try:
             data = Data()
-            account = data.get_account("cs_account")
+            account = data.get_account("nq_account")
             pwd = data.get_pwd("cs_pwd")
             find_elements(self.browser, By.CLASS_NAME, "el-input__inner")[0].send_keys(account)
             find_elements(self.browser, By.CLASS_NAME, "el-input__inner")[1].send_keys(pwd)

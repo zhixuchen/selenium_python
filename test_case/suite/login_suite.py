@@ -7,6 +7,7 @@ from test_case.suite import *
 
 def suite():
     suite = unittest.TestSuite()
+    suite.addTest(login_case.Login_Case('home_page'))
     suite.addTest(login_case.Login_Case('test_loginsSuccessbypwd'))
     suite.addTest(login_case.Login_Case('test_loginsSuccessbysms_code'))
     suite.addTest(login_case.Login_Case('test_nulluser'))
